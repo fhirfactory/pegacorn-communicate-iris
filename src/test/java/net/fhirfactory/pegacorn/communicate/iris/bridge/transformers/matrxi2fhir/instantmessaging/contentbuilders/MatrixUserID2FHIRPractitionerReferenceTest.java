@@ -23,11 +23,8 @@
  */
 package net.fhirfactory.pegacorn.communicate.iris.bridge.transformers.matrxi2fhir.instantmessaging.contentbuilders;
 
-import net.fhirfactory.pegacorn.communicate.iris.bridge.transformers.matrxi2fhir.instantmessaging.contentbuilders.MatrixUserID2FHIRPractitionerReference;
-import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.parser.IParser;
-import net.fhirfactory.pegacorn.communicate.iris.bridge.transformers.matrxi2fhir.common.MatrixAttribute2FHIRIdentifierBuilders;
-import net.fhirfactory.pegacorn.communicate.iris.bridge.transformers.common.keyidentifiermaps.MatrixUserID2PractitionerIDMap;
+import net.fhirfactory.pegacorn.communicate.iris.core.matrxi2fhir.instantmessaging.contentbuilders.MatrixUserID2FHIRPractitionerReference;
+import net.fhirfactory.pegacorn.communicate.iris.core.common.keyidentifiermaps.MatrixUserID2PractitionerIDMap;
 import net.fhirbox.pegacorn.deploymentproperties.CommunicateProperties;
 import net.fhirfactory.pegacorn.referencevalues.PegacornSystemReference;
 import org.hl7.fhir.r4.model.Identifier;

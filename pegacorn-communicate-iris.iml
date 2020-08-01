@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
+    <facet type="Spring" name="Spring">
+      <configuration />
+    </facet>
     <facet type="web" name="Web">
       <configuration>
         <webroots>
@@ -12,8 +15,19 @@
         </sourceRoots>
       </configuration>
     </facet>
-    <facet type="Spring" name="Spring">
-      <configuration />
+    <facet type="javaeeApplication" name="javaEEApplication">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="application.xml" url="file://$MODULE_DIR$/META-INF/application.xml" />
+        </descriptors>
+      </configuration>
+    </facet>
+    <facet type="javaeeApplication" name="javaEEApplication2">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="application.xml" url="file://$MODULE_DIR$/bin/META-INF/application.xml" />
+        </descriptors>
+      </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
@@ -28,14 +42,13 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="pegacorn-petasos-base" />
     <orderEntry type="module" module-name="pegacorn-deployment" />
-    <orderEntry type="module" module-name="pegacorn-common" />
+    <orderEntry type="module" module-name="pegacorn-platform-commoncode" />
     <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="library" name="Maven: ca.uhn.hapi.fhir:org.hl7.fhir.r4:4.2.0" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-io:9.4.12.v20180830" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:9.4.12.v20180830" level="project" />
-    <orderEntry type="library" name="Maven: net.fhirfactory.pegacorn:pegacorn-petasos-stub:1.0.0-SNAPSHOT" level="project" />
+    <orderEntry type="module" module-name="pegacorn-platform-petasos" />
     <orderEntry type="module" module-name="pegacorn-fhir-r4-model" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-core:3.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-core-engine:3.1.0" level="project" />
@@ -85,15 +98,15 @@
     <orderEntry type="library" name="Maven: org.apache.camel:camel-jms:3.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-spring:3.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-core-xml:3.1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-core:5.1.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-jcl:5.1.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-aop:5.1.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-expression:5.1.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-jms:5.1.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-messaging:5.1.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context:5.1.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.1.6.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.1.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-core:5.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-jcl:5.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-aop:5.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-expression:5.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-jms:5.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-messaging:5.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context:5.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-tx:5.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-beans:5.2.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-jms_2.0_spec:1.0-alpha-2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-netty-http:3.1.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.camel:camel-netty:3.1.0" level="project" />
@@ -116,9 +129,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.msc:jboss-msc:1.4.11.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.threads:jboss-threads:2.3.3.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.wildfly.common:wildfly-common:1.5.1.Final" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.enterprise:cdi-api:2.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.el:javax.el-api:3.0.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.interceptor:javax.interceptor-api:1.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: javax.enterprise:cdi-api:${javax.enterprise.cdi-api.version}" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.spec.javax.ejb:jboss-ejb-api_3.2_spec:2.0.0.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.spec.javax.transaction:jboss-transaction-api_1.3_spec:2.0.0.Final" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.jboss.spec.javax.jms:jboss-jms-api_2.0_spec:2.0.0.Final" level="project" />
@@ -143,7 +154,7 @@
     <orderEntry type="library" name="Maven: com.phloc:phloc-commons:4.3.3" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.findbugs:annotations:2.0.3" level="project" />
     <orderEntry type="library" name="Maven: net.sf.saxon:Saxon-HE:9.9.1-6" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.8" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:${commons-lang3-version}" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.10.1" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.10" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.10" level="project" />

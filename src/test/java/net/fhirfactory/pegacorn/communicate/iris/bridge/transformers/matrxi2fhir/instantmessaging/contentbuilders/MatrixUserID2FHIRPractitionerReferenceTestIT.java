@@ -23,18 +23,14 @@
  */
 package net.fhirfactory.pegacorn.communicate.iris.bridge.transformers.matrxi2fhir.instantmessaging.contentbuilders;
 
-import net.fhirfactory.pegacorn.communicate.iris.bridge.transformers.matrxi2fhir.instantmessaging.contentbuilders.MatrixUserID2FHIRPractitionerReference;
+import net.fhirfactory.pegacorn.communicate.iris.core.matrxi2fhir.instantmessaging.contentbuilders.MatrixUserID2FHIRPractitionerReference;
 import org.hl7.fhir.r4.model.Reference;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 
 /**
