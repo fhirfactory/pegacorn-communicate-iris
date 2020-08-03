@@ -56,7 +56,7 @@ import org.hl7.fhir.r4.model.MessageHeader.MessageSourceComponent;
 import net.fhirfactory.pegacorn.communicate.iris.core.common.exceptions.MinorTransformationException;
 import net.fhirfactory.pegacorn.communicate.iris.core.common.exceptions.WrongContentTypeException;
 import net.fhirfactory.pegacorn.communicate.iris.core.matrxi2fhir.common.MatrixAttribute2FHIRIdentifierBuilders;
-import net.fhirbox.pegacorn.deploymentproperties.CommunicateProperties;
+import net.fhirfactory.pegacorn.deploymentproperties.CommunicateProperties;
 import net.fhirfactory.pegacorn.referencevalues.PegacornSystemReference;
 
 /**
@@ -264,7 +264,7 @@ public class MatrixRoomIM2FHIRCommunication
         MessageSourceComponent messageSource = new MessageSourceComponent();
         messageSource.setName("Pegacorn Matrix2FHIR Integration Service");
         messageSource.setSoftware("Pegacorn::Communicate::Iris");
-        messageSource.setEndpoint(communicateProperties.getIrisEndPointForIncomingCommunicationBundle());
+//        messageSource.setEndpoint(communicateProperties.getIrisEndPointForIncomingCommunicationBundle());
         return (messageHeaderElement);
     }
 
@@ -427,7 +427,7 @@ public class MatrixRoomIM2FHIRCommunication
         LOG.trace(".buildInResponseTo(): Set the FHIR::Identifier.Use to -OFFICIAL- (we are the source of truth for this)");
         localResourceIdentifier.setUse(Identifier.IdentifierUse.OFFICIAL);
         LOG.trace(".buildInResponseTo(): Set the FHIR::Identifier.System to Pegacorn (it's our ID we're creating)");
-        localResourceIdentifier.setSystem(pegacornSystemReference.getDefaultIdentifierSystemForRoomServerDetails());
+        localResourceIdentifier.setSystem(pegacornSystemReference.getDefaultIdentifierSystemForCommunicateGroupServer());
         LOG.trace(".buildInResponseTo(): Set the FHIR::Identifier.Value to the -event_id- from the RoomServer system {}", referredToMessage.getString("event_id"));
         localResourceIdentifier.setValue(referredToMessage.getString("event_id"));
         LOG.trace(".buildInResponseTo(): Identifier added to Reference --> " + localResourceIdentifier.toString());

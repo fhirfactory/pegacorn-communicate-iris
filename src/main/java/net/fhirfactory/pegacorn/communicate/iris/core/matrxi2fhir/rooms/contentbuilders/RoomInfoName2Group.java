@@ -34,7 +34,7 @@ import net.fhirfactory.pegacorn.communicate.iris.core.common.exceptions.MinorTra
 import net.fhirfactory.pegacorn.communicate.iris.core.common.keyidentifiermaps.MatrixRoomID2MatrixRoomNameMap;
 import net.fhirfactory.pegacorn.communicate.iris.core.common.keyidentifiermaps.MatrixRoomID2ResourceReferenceMap;
 import net.fhirfactory.pegacorn.communicate.iris.core.matrxi2fhir.common.MatrixAttribute2FHIRIdentifierBuilders;
-import net.fhirbox.pegacorn.deploymentproperties.CommunicateProperties;
+import net.fhirfactory.pegacorn.deploymentproperties.CommunicateProperties;
 import net.fhirfactory.pegacorn.referencevalues.PegacornSystemReference;
 import net.fhirfactory.pegacorn.fhir.r4.model.common.GroupPC;
 import org.hl7.fhir.r4.model.Bundle;
@@ -106,7 +106,7 @@ public class RoomInfoName2Group {
         MessageHeader.MessageSourceComponent messageSource = new MessageHeader.MessageSourceComponent();
         messageSource.setName("Pegacorn Matrix2FHIR Integration Service");
         messageSource.setSoftware("Pegacorn::Communicate::Iris");
-        messageSource.setEndpoint(communicateProperties.getIrisEndPointForIncomingGroupBundle());
+//        messageSource.setEndpoint(communicateProperties.getIrisEndPointForIncomingGroupBundle());
         return (messageHeaderElement);
     }
 

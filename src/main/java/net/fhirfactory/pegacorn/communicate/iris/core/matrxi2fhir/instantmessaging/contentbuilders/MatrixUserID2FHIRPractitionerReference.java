@@ -24,8 +24,6 @@ package net.fhirfactory.pegacorn.communicate.iris.core.matrxi2fhir.instantmessag
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import net.fhirfactory.pegacorn.communicate.iris.core.common.exceptions.MinorTransformationException;
-import net.fhirfactory.pegacorn.communicate.iris.core.common.keyidentifiermaps.MatrixUserID2PractitionerIDMap;
-import net.fhirbox.pegacorn.deploymentproperties.CommunicateProperties;
 import net.fhirfactory.pegacorn.referencevalues.PegacornSystemReference;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Reference;
@@ -39,19 +37,12 @@ import org.slf4j.LoggerFactory;
  *
  */
 @ApplicationScoped
-public class MatrixUserID2FHIRPractitionerReference
-{
+public class MatrixUserID2FHIRPractitionerReference {
 
     private static final Logger LOG = LoggerFactory.getLogger(MatrixUserID2FHIRPractitionerReference.class);
 
     @Inject
     protected PegacornSystemReference pegacornSystemReference;
-
-    @Inject
-    protected CommunicateProperties communicateProperties;
-
-    @Inject
-    protected MatrixUserID2PractitionerIDMap theUserID2PractitionerIDMap;
 
     /**
      * This method constructs a set of FHIR::Reference entities for the
@@ -74,35 +65,23 @@ public class MatrixUserID2FHIRPractitionerReference
      * https://www.hl7.org/fhir/references.html#Reference)
      */
     public Reference buildFHIRPractitionerReferenceFromMatrixUserID(String matrixUserID, boolean createIfNotExist)
-            throws MinorTransformationException
-    {
+            throws MinorTransformationException {
         LOG.debug("buildFHIRPractitionerReferenceFromMatrixUserID(): Entry, for Matrix User ID --> {}", matrixUserID);
         // Get the associated Reference from the RoomServer.RoomID ("room_id")
         if (matrixUserID.isEmpty()) {
             LOG.error("buildFHIRPractitionerReferenceFromMatrixUserID(): Matrix User ID missing");
             throw (new MinorTransformationException("buildFHIRPractitionerReferenceFromMatrixUserID(): Matrix User ID missing"));
         }
-        LOG.trace("buildFHIRPractitionerReferenceFromMatrixUserID: attempting to retrieve Practitioner Identifier from ID Map" );
-        Identifier practitionerId = theUserID2PractitionerIDMap.getPractitionerIDFromUserName(matrixUserID);
-        LOG.trace("buildFHIRPractitionerReferenceFromMatrixUserID: retrieved Practitioner Identifier --> {}", practitionerId);
-        // If there are no References associated to the RoomServer.RoomID, return an
-        // empty set.
-        if ((practitionerId == null) & !createIfNotExist) {
-            LOG.debug("buildFHIRPractitionerReferenceFromMatrixUserID(): No mapped Matrix User ID <-> FHIR Practitioner Identifier, return null");
-            return (null);
-        }
-        if (practitionerId == null) {
-            LOG.trace("buildFHIRPractitionerReferenceFromMatrixUserID(): No Mapped Identifier, creating temporary one");
-            practitionerId = new Identifier();
-            // Set the FHIR::Identifier.Use to "TEMP" (this id is not guaranteed)
-            practitionerId.setUse(Identifier.IdentifierUse.TEMP);
-            // Set the FHIR::Identifier.System to Pegacorn (it's our ID we're creating)
-            practitionerId.setSystem(pegacornSystemReference.getDefaultIdentifierSystemForRoomServerDetails());
-            // Set the FHIR::Identifier.Value to the "sender" from the RoomServer system
-            practitionerId.setValue(matrixUserID);
-            LOG.trace("buildSenderReference(): Created Identifier --> {}" + practitionerId);
-        }
-        LOG.trace("buildFHIRPractitionerReferenceFromMatrixUserID(): Creatig a Reference");
+        LOG.trace("buildFHIRPractitionerReferenceFromMatrixUserID(): No Mapped Identifier, creating temporary one");
+        Identifier practitionerId = new Identifier();
+        // Set the FHIR::Identifier.Use to "TEMP" (this id is not guaranteed)
+        practitionerId.setUse(Identifier.IdentifierUse.TEMP);
+        // Set the FHIR::Identifier.System to Pegacorn (it's our ID we're creating)
+        practitionerId.setSystem(pegacornSystemReference.getDefaultIdentifierSystemForCommunicateGroupServer());
+        // Set the FHIR::Identifier.Value to the "sender" from the RoomServer system
+        practitionerId.setValue(matrixUserID);
+        LOG.trace("buildFHIRPractitionerReferenceFromMatrixUserID(): Created Identifier --> {}" + practitionerId);
+        LOG.trace("buildFHIRPractitionerReferenceFromMatrixUserID(): Now creating a Reference");
         // Create the empty FHIR::Reference element
         Reference newPractitionerReference = new Reference();
         // Add the FHIR::Identifier to the FHIR::Reference.Identifier

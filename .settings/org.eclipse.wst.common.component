@@ -7,7 +7,16 @@
         <dependent-module archiveName="pegacorn-deployment-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pegacorn-deployment/pegacorn-deployment">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="pegacorn-common-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pegacorn-common/pegacorn-common">
+        <dependent-module archiveName="pegacorn-platform-petasos-model-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pegacorn-platform-petasos-model/pegacorn-platform-petasos-model">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="pegacorn-platform-petasos-topology-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pegacorn-platform-petasos-topology/pegacorn-platform-petasos-topology">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="pegacorn-platform-petasos-datasets-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pegacorn-platform-petasos-datasets/pegacorn-platform-petasos-datasets">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="pegacorn-platform-petasos-core-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pegacorn-platform-petasos-core/pegacorn-platform-petasos-core">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="pegacorn-fhir-r4-model-1.0.0-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/pegacorn-fhir-r4-model/pegacorn-fhir-r4-model">

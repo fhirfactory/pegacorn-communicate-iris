@@ -19,11 +19,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
 package net.fhirfactory.pegacorn.communicate.iris.core.matrxi2fhir.common;
 
 import net.fhirfactory.pegacorn.referencevalues.PegacornSystemReference;
 import java.util.Date;
+import javax.enterprise.context.ApplicationScoped;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -35,15 +35,12 @@ import net.fhirfactory.pegacorn.communicate.iris.core.common.keyidentifiermaps.M
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Singleton                                                   
+@ApplicationScoped
 public class MatrixAttribute2FHIRIdentifierBuilders {
 
     private static final Logger LOG = LoggerFactory.getLogger(MatrixAttribute2FHIRIdentifierBuilders.class);
 
     PegacornSystemReference pegacornSystemReference = new PegacornSystemReference();
-    
-    @Inject
-    protected MatrixUserID2PractitionerIDMap theUserID2PractitionerIDMap;
 
     public Identifier buildFHIRPractitionerIdentifierFromMatrixUserID(String userID) {
         LOG.debug("buildFHIRPractitionerIdentifierFromMatrixUserID(): Entry, userID --> " + userID);
@@ -51,28 +48,17 @@ public class MatrixAttribute2FHIRIdentifierBuilders {
             LOG.debug("buildFHIRPractitionerIdentifierFromMatrixUserID(): Exit, userID is empty or null");
             return (null);
         }
-        LOG.trace("buildFHIRPractitionerIdentifierFromMatrixUserID(): userID contains something");
-        if( this.theUserID2PractitionerIDMap == null){
-            LOG.debug("buildFHIRPractitionerIdentifierFromMatrixUserID(): Something is wrong with the UserID2PractitionerID map");
-        }
-        Identifier localSenderIdentifier = this.theUserID2PractitionerIDMap.getPractitionerIDFromUserName(userID);
-        LOG.trace("buildFHIRPractitionerIdentifierFromMatrixUserID(): looked up the UserID2PractitionerIDMap");
-        if (localSenderIdentifier != null) {
-            LOG.debug("buildFHIRPractitionerIdentifierFromMatrixUserID(): found valid Identifier in IDMap --> " + localSenderIdentifier.toString() );
-            return (localSenderIdentifier);
-        } else {
-            LOG.trace("buildFHIRPractitionerIdentifierFromMatrixUserID(): not valid Identifier found, creating one");
-            // Create an empty FHIR::Identifier element
-            localSenderIdentifier = new Identifier();
-            // Set the FHIR::Identifier.Use to "TEMP" (this id is not guaranteed)
-            localSenderIdentifier.setUse(Identifier.IdentifierUse.TEMP);
-            // Set the FHIR::Identifier.System to Pegacorn (it's our ID we're creating)
-            localSenderIdentifier.setSystem(pegacornSystemReference.getDefaultIdentifierSystemForRoomServerDetails());
-            // Set the FHIR::Identifier.Value to the "sender" from the RoomServer system
-            localSenderIdentifier.setValue(userID);
-            LOG.debug("buildFHIRPractitionerIdentifierFromMatrixUserID(): Exit, create Identifier --> " + localSenderIdentifier.toString());
-            return (localSenderIdentifier);
-        }
+        LOG.trace("buildFHIRPractitionerIdentifierFromMatrixUserID(): not valid Identifier found, creating one");
+        // Create an empty FHIR::Identifier element
+        Identifier localSenderIdentifier = new Identifier();
+        // Set the FHIR::Identifier.Use to "TEMP" (this id is not guaranteed)
+        localSenderIdentifier.setUse(Identifier.IdentifierUse.TEMP);
+        // Set the FHIR::Identifier.System to Pegacorn (it's our ID we're creating)
+        localSenderIdentifier.setSystem(pegacornSystemReference.getDefaultIdentifierSystemForCommunicateGroupServer());
+        // Set the FHIR::Identifier.Value to the "sender" from the RoomServer system
+        localSenderIdentifier.setValue(userID);
+        LOG.debug("buildFHIRPractitionerIdentifierFromMatrixUserID(): Exit, create Identifier --> " + localSenderIdentifier.toString());
+        return (localSenderIdentifier);
     }
 
     public Identifier buildFHIRGroupIdentifierFromMatrixRoomID(String roomID, Long creationTime) {
@@ -86,7 +72,7 @@ public class MatrixAttribute2FHIRIdentifierBuilders {
         // Set the FHIR::Identifier.Use to "TEMP" (this id is not guaranteed)
         localGroupIdentifier.setUse(Identifier.IdentifierUse.TEMP);
         // Set the FHIR::Identifier.System to Pegacorn (it's our ID we're creating)
-        localGroupIdentifier.setSystem(pegacornSystemReference.getDefaultIdentifierSystemForRoomServerDetails());
+        localGroupIdentifier.setSystem(pegacornSystemReference.getDefaultIdentifierSystemForCommunicateGroupServer());
         // Set the FHIR::Identifier.Value to the "room id" from the RoomServer system
         localGroupIdentifier.setValue(roomID);
         // Create a FHIR::Period as a container for the valid message start/end times

@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
 
 import net.fhirfactory.pegacorn.referencevalues.PegacornSystemReference;
 import net.fhirfactory.pegacorn.communicate.iris.core.common.exceptions.MinorTransformationException;
-import net.fhirbox.pegacorn.deploymentproperties.CommunicateProperties;
+import net.fhirfactory.pegacorn.deploymentproperties.CommunicateProperties;
 import net.fhirfactory.pegacorn.fhir.r4.model.common.GroupPC;
 import net.fhirfactory.pegacorn.fhir.r4.model.common.helpers.GroupJoinRuleStatusEnum;
 
@@ -115,7 +115,7 @@ public class MatrixRoomEvent2FHIRGroup
         MessageHeader.MessageSourceComponent messageSource = new MessageHeader.MessageSourceComponent();
         messageSource.setName("Pegacorn Matrix2FHIR Integration Service");
         messageSource.setSoftware("Pegacorn::Communicate::Iris");
-        messageSource.setEndpoint(communicateProperties.getIrisEndPointForIncomingGroupBundle());
+//        messageSource.setEndpoint(communicateProperties.getIrisEndPointForIncomingGroupBundle());
         return (messageHeaderElement);
     }
 

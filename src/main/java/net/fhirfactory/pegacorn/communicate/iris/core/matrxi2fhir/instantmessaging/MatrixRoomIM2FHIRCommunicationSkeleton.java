@@ -33,7 +33,7 @@ import net.fhirfactory.pegacorn.communicate.iris.core.matrxi2fhir.instantmessagi
 import net.fhirfactory.pegacorn.communicate.iris.core.common.exceptions.MajorTransformationException;
 import net.fhirfactory.pegacorn.communicate.iris.core.common.exceptions.MatrixMessageException;
 import net.fhirfactory.pegacorn.communicate.iris.core.common.exceptions.MinorTransformationException;
-import net.fhirbox.pegacorn.deploymentproperties.CommunicateProperties;
+import net.fhirfactory.pegacorn.deploymentproperties.CommunicateProperties;
 import net.fhirfactory.pegacorn.referencevalues.PegacornSystemReference;
 import org.hl7.fhir.r4.model.CodeableConcept;
 import org.hl7.fhir.r4.model.Coding;
@@ -193,7 +193,7 @@ public class MatrixRoomIM2FHIRCommunicationSkeleton
         // Set the FHIR::Identifier.Use to "TEMP" (Ladon needs to analyse it before its "OFFICIAL")
         newCommunicationIdentifier.setUse(Identifier.IdentifierUse.SECONDARY);
         // Set the FHIR::Identifier.System to Pegacorn (it's our ID we're creating)
-        newCommunicationIdentifier.setSystem(pegacornSystemReference.getDefaultIdentifierSystemForRoomServerDetails());
+        newCommunicationIdentifier.setSystem(pegacornSystemReference.getDefaultIdentifierSystemForCommunicateGroupServer());
         // Set the FHIR::Identifier.Value to the "event_id" from the RoomServer system
         if (!roomMessage.has("event_id")) {
             LOG.error("buildCommunicationIdentifier(): Exit, Room Instant Message (m.room.message) --> message does not contain an entity_id");

@@ -25,7 +25,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import net.fhirfactory.pegacorn.communicate.iris.core.common.exceptions.MinorTransformationException;
-import net.fhirbox.pegacorn.deploymentproperties.CommunicateProperties;
+import net.fhirfactory.pegacorn.deploymentproperties.CommunicateProperties;
 import net.fhirfactory.pegacorn.referencevalues.PegacornSystemReference;
 import org.hl7.fhir.r4.model.Identifier;
 import org.hl7.fhir.r4.model.Reference;
@@ -87,7 +87,7 @@ public class MatrixRoomID2FHIRGroupReference
         // Set the FHIR::Identifier.Use to "SECONDARY" (this id is not guaranteed)
         localSubjectIdentifier.setUse(Identifier.IdentifierUse.SECONDARY);
         // Set the FHIR::Identifier.System to Pegacorn (it's our ID we're creating)
-        localSubjectIdentifier.setSystem(pegacornSystemReference.getDefaultIdentifierSystemForRoomServerDetails());
+        localSubjectIdentifier.setSystem(pegacornSystemReference.getDefaultIdentifierSystemForCommunicateGroupServer());
         // Set the FHIR::Identifier.Value to the "sender" from the RoomServer system
         localSubjectIdentifier.setValue(roomID);
         // Add the FHIR::Identifier to the FHIR::Reference.Identifier
