@@ -3,13 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.fhirfactory.pegacorn.communicate.iris.wups.interact;
+package net.fhirfactory.pegacorn.communicate.iris.interact.ingres.beans;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import javax.enterprise.context.ApplicationScoped;
-import net.fhirfactory.pegacorn.common.model.FDN;
-import net.fhirfactory.pegacorn.common.model.RDN;
+import net.fhirfactory.pegacorn.common.model.generalid.FDN;
+import net.fhirfactory.pegacorn.common.model.generalid.RDN;
 import net.fhirfactory.pegacorn.petasos.model.topics.TopicToken;
 import net.fhirfactory.pegacorn.petasos.model.topics.TopicTypeEnum;
 import net.fhirfactory.pegacorn.petasos.model.uow.UoW;

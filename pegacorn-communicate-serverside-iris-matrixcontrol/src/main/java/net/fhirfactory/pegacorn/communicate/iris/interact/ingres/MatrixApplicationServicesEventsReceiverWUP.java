@@ -20,12 +20,12 @@
  * SOFTWARE.
  */
 
-package net.fhirfactory.pegacorn.communicate.iris.wups.interact.ingres;
+package net.fhirfactory.pegacorn.communicate.iris.interact.ingres;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import net.fhirfactory.pegacorn.communicate.iris.wups.interact.IncomingMatrixEventSetValidator;
-import net.fhirfactory.pegacorn.communicate.iris.wups.interact.IncomingMatrixEventSet2UoW;
+
+import net.fhirfactory.pegacorn.communicate.iris.interact.ingres.beans.IncomingMatrixEventSetValidator;
+import net.fhirfactory.pegacorn.communicate.iris.interact.ingres.beans.IncomingMatrixEventSet2UoW;
 import net.fhirfactory.pegacorn.petasos.wup.archetypes.InteractIngresMessagingGatewayWUP;
 import net.fhirfactory.pegacorn.petasos.wup.helper.IngresActivityBeginRegistration;
 import org.apache.camel.LoggingLevel;
@@ -69,7 +69,7 @@ public class MatrixApplicationServicesEventsReceiverWUP extends InteractIngresMe
     }
 
     @Override
-    public String specifyWUPVersion() {
+    public String specifyWUPInstanceVersion() {
         return("0.0.1");
     }
     
@@ -91,5 +91,45 @@ public class MatrixApplicationServicesEventsReceiverWUP extends InteractIngresMe
     @Override
     protected String getEndpointProtocolLeadout() {
         return("/");
+    }
+
+    @Override
+    protected Logger getLogger() {
+        return null;
+    }
+
+    @Override
+    protected String specifyWUPWorkshop() {
+        return null;
+    }
+
+    @Override
+    protected String specifyIngresTopologyEndpointName() {
+        return null;
+    }
+
+    @Override
+    protected String specifyIngresEndpointVersion() {
+        return null;
+    }
+
+    @Override
+    protected String specifyEndpointComponentDefinition() {
+        return null;
+    }
+
+    @Override
+    protected String specifyEndpointProtocol() {
+        return null;
+    }
+
+    @Override
+    protected String specifyEndpointProtocolLeadIn() {
+        return null;
+    }
+
+    @Override
+    protected String specifyEndpointProtocolLeadout() {
+        return null;
     }
 }
