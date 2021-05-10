@@ -14,7 +14,7 @@
     <artifactId>pegacorn-communicate-serverside-iris-matrixcontrol</artifactId>
     <packaging>jar</packaging>
         
-    <name>Pegacorn :: Communicate :: Server Side :: Iris :: Matrix I/O and Control</name>
+    <name>Pegacorn :: Communicate :: Server Side :: Iris :: MatrixControl (Matrix I/O and Control)</name>
 
     <url>http://pegacorn.fhirfactory.net</url>
 
@@ -33,23 +33,14 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>javax.enterprise.concurrent</groupId>
+            <artifactId>javax.enterprise.concurrent-api</artifactId>
+            <version>1.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.jboss.spec.javax.ejb</groupId>
             <artifactId>jboss-ejb-api_3.2_spec</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.jms</groupId>
-            <artifactId>jboss-jms-api_2.0_spec</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.servlet</groupId>
-            <artifactId>jboss-servlet-api_4.0_spec</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.spec.javax.ws.rs</groupId>
-            <artifactId>jboss-jaxrs-api_2.1_spec</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -114,7 +105,7 @@
         <!-- **************************** -->
         <!-- * Pegacorn Components      * -->
         <!-- **************************** -->
-<!--
+
         <dependency>
             <groupId>net.fhirfactory.pegacorn</groupId>
             <artifactId>pegacorn-deployment-topology</artifactId>
@@ -152,13 +143,6 @@
         </dependency>
         <dependency>
             <groupId>net.fhirfactory.pegacorn</groupId>
-            <artifactId>pegacorn-platform-petasos-topology</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.fhirfactory.pegacorn</groupId>
             <artifactId>pegacorn-platform-petasos-datasets</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
@@ -173,14 +157,14 @@
         </dependency>
         <dependency>
             <groupId>net.fhirfactory.pegacorn</groupId>
-            <artifactId>pegacorn-platform-petasos-ipc</artifactId>
+            <artifactId>pegacorn-buildingblocks-datamodels-matrix</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.fhirfactory.pegacorn</groupId>
-            <artifactId>pegacorn-buildingblocks-edge</artifactId>
+            <artifactId>pegacorn-buildingblocks-edge-model</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>
@@ -192,7 +176,28 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
-        -->
+        <dependency>
+            <groupId>net.fhirfactory.pegacorn</groupId>
+            <artifactId>pegacorn-buildingblocks-directoryservices</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.fhirfactory.pegacorn</groupId>
+            <artifactId>pegacorn-buildingblocks-workshop</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.fhirfactory.pegacorn</groupId>
+            <artifactId>pegacorn-buildingblocks-workunitprocessors</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
 
         <!-- **************************** -->
         <!-- * Infinispan               * -->
@@ -249,6 +254,12 @@
         <dependency>
             <groupId>net.fhirfactory.pegacorn</groupId>
             <artifactId>pegacorn-platform-petasos-core</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.fhirfactory.pegacorn</groupId>
+            <artifactId>pegacorn-buildingblocks-workshop</artifactId>
             <version>1.0.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>

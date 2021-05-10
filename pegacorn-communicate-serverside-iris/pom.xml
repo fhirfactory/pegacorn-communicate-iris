@@ -20,9 +20,10 @@
     </properties>
     
     <modules>
-        <module>../pegacorn-communicate-serverside-iris-fhirbridge</module>
+        <module>../pegacorn-communicate-serverside-iris-workflow</module>
+<!--        <module>../pegacorn-communicate-serverside-iris-fhirbridge</module> -->
         <module>../pegacorn-communicate-serverside-iris-matrixcontrol</module>
-        <module>../pegacorn-communicate-serverside-iris-fhircontrol</module>
+<!--        <module>../pegacorn-communicate-serverside-iris-fhircontrol</module> -->
         <module>../pegacorn-communicate-serverside-iris-subsystem</module>
     </modules>
 </project>

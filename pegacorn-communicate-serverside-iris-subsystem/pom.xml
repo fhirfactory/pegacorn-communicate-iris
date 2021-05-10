@@ -12,7 +12,7 @@
     </parent>
 
     <artifactId>pegacorn-communicate-serverside-iris-subsystem</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
         
     <name>Pegacorn :: Communicate :: Server Side :: Iris :: Subsystem</name>
 
@@ -76,17 +76,6 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-netty-http</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-servlet</artifactId>
-            <scope>runtime</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.tomcat.embed</groupId>
-                    <artifactId>tomcat-embed-logging-juli</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
 
         <!-- **************************** -->
         <!-- * HAPI FHIR                * -->
@@ -114,7 +103,6 @@
         <!-- **************************** -->
         <!-- * Pegacorn Components      * -->
         <!-- **************************** -->
-<!--
         <dependency>
             <groupId>net.fhirfactory.pegacorn</groupId>
             <artifactId>pegacorn-deployment-topology</artifactId>
@@ -152,7 +140,7 @@
         </dependency>
         <dependency>
             <groupId>net.fhirfactory.pegacorn</groupId>
-            <artifactId>pegacorn-platform-petasos-topology</artifactId>
+            <artifactId>pegacorn-platform-petasos-audit</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>
@@ -180,7 +168,7 @@
         </dependency>
         <dependency>
             <groupId>net.fhirfactory.pegacorn</groupId>
-            <artifactId>pegacorn-buildingblocks-edge</artifactId>
+            <artifactId>pegacorn-buildingblocks-edge-model</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>
@@ -192,7 +180,27 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
-        -->
+        <dependency>
+            <groupId>net.fhirfactory.pegacorn</groupId>
+            <artifactId>pegacorn-buildingblocks-workunitprocessors</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.fhirfactory.pegacorn</groupId>
+            <artifactId>pegacorn-buildingblocks-auditservices</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.fhirfactory.pegacorn</groupId>
+            <artifactId>pegacorn-communicate-serverside-iris-matrixcontrol</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- **************************** -->
         <!-- * Infinispan               * -->

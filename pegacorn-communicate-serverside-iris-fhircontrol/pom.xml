@@ -14,7 +14,7 @@
     <artifactId>pegacorn-communicate-serverside-iris-fhircontrol</artifactId>
     <packaging>jar</packaging>
         
-    <name>Pegacorn :: Communicate :: Server Side :: Iris :: FHIR Control</name>
+    <name>Pegacorn :: Communicate :: Server Side :: Iris :: FHIRControl (FHIR I/O and Control)</name>
 
     <url>http://pegacorn.fhirfactory.net</url>
 
@@ -114,7 +114,7 @@
         <!-- **************************** -->
         <!-- * Pegacorn Components      * -->
         <!-- **************************** -->
-<!--
+
         <dependency>
             <groupId>net.fhirfactory.pegacorn</groupId>
             <artifactId>pegacorn-deployment-topology</artifactId>
@@ -146,13 +146,6 @@
         <dependency>
             <groupId>net.fhirfactory.pegacorn</groupId>
             <artifactId>pegacorn-platform-petasos-model</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.fhirfactory.pegacorn</groupId>
-            <artifactId>pegacorn-platform-petasos-topology</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>
@@ -192,7 +185,6 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
-        -->
 
         <!-- **************************** -->
         <!-- * Infinispan               * -->
