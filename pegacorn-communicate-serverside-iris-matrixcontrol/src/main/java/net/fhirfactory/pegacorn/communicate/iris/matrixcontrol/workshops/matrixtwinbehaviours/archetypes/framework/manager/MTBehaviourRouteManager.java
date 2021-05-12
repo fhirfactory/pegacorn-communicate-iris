@@ -21,7 +21,7 @@
  */
 package net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinbehaviours.archetypes.framework.manager;
 
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTBehaviourTypeEnum;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.behaviours.MTBehaviourTypeEnum;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTTypeEnum;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinbehaviours.archetypes.framework.worker.common.MTTimerBasedBehaviourRouteFrameworkTemplate;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinbehaviours.archetypes.framework.worker.twintypecentrc.*;

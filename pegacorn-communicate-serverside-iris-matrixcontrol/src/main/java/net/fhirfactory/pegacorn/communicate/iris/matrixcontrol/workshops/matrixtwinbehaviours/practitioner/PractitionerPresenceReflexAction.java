@@ -25,8 +25,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.fhirfactory.pegacorn.common.model.generalid.FDN;
 import net.fhirfactory.pegacorn.common.model.generalid.RDN;
-import net.fhirfactory.pegacorn.common.model.topicid.TopicToken;
-import net.fhirfactory.pegacorn.common.model.topicid.TopicTypeEnum;
+import net.fhirfactory.pegacorn.common.model.topicid.DataParcelToken;
+import net.fhirfactory.pegacorn.common.model.topicid.DataParcelTypeKeyEnum;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinbehaviours.MatrixBehavioursWorkshop;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.cache.room.RoomMapCache;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.cache.user.UserMapCache;
@@ -82,17 +82,17 @@ public class PractitionerPresenceReflexAction extends MOAStandardWUP {
     }
 
     @Override
-    protected Set<TopicToken> specifySubscriptionTopics() {
+    protected Set<DataParcelToken> specifySubscriptionTopics() {
         FDN presenceEventsFDN = new FDN();
-        presenceEventsFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_DEFINER.getTopicType(), "Matrix"));
-        presenceEventsFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_CATEGORY.getTopicType(), "ClientServerAPI"));
-        presenceEventsFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "Presence"));
-        presenceEventsFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "m.presence"));
-        TopicToken presenceEventsTopicToken = new TopicToken();
-        presenceEventsTopicToken.setIdentifier(presenceEventsFDN.getToken());
-        presenceEventsTopicToken.setVersion("0.6.1");
-        HashSet<TopicToken> subscribedTopicSet = new HashSet<>();
-        subscribedTopicSet.add(presenceEventsTopicToken);
+        presenceEventsFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_DEFINER.getTopicType(), "Matrix"));
+        presenceEventsFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_CATEGORY.getTopicType(), "ClientServerAPI"));
+        presenceEventsFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "Presence"));
+        presenceEventsFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), "m.presence"));
+        DataParcelToken presenceEventsDataParcelToken = new DataParcelToken();
+        presenceEventsDataParcelToken.setToken(presenceEventsFDN.getToken());
+        presenceEventsDataParcelToken.setVersion("0.6.1");
+        HashSet<DataParcelToken> subscribedTopicSet = new HashSet<>();
+        subscribedTopicSet.add(presenceEventsDataParcelToken);
         return(subscribedTopicSet);
     }
 

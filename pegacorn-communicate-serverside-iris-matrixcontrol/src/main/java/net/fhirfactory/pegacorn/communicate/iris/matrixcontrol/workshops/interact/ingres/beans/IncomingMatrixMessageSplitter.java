@@ -7,8 +7,10 @@ package net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.intera
 
 import net.fhirfactory.pegacorn.common.model.generalid.FDN;
 import net.fhirfactory.pegacorn.common.model.generalid.RDN;
-import net.fhirfactory.pegacorn.common.model.topicid.TopicToken;
-import net.fhirfactory.pegacorn.common.model.topicid.TopicTypeEnum;
+import net.fhirfactory.pegacorn.common.model.topicid.DataParcelNormalisationStatusEnum;
+import net.fhirfactory.pegacorn.common.model.topicid.DataParcelToken;
+import net.fhirfactory.pegacorn.common.model.topicid.DataParcelTypeKeyEnum;
+import net.fhirfactory.pegacorn.internals.matrix.r061.events.common.contenttypes.MEventTypeEnum;
 import net.fhirfactory.pegacorn.petasos.model.uow.UoW;
 import net.fhirfactory.pegacorn.petasos.model.uow.UoWPayload;
 import net.fhirfactory.pegacorn.petasos.model.uow.UoWPayloadSet;
@@ -41,77 +43,147 @@ public class IncomingMatrixMessageSplitter {
         LOG.trace("splitMessageIntoEvents(): Converted to JSONArray, number of elements --> " + localMessageEvents.length());
         for (Integer counter = 0; counter < localMessageEvents.length(); counter += 1) {
             JSONObject eventInstance = localMessageEvents.getJSONObject(counter);
-            LOG.trace("splitMessageIntoEvents(): Exctracted JSONObject --> " + eventInstance.toString());
+            LOG.trace("splitMessageIntoEvents(): Extracted JSONObject --> " + eventInstance.toString());
             if (eventInstance.has("type")) {
                 FDN payloadTopicFDN = new FDN();
-                payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_DEFINER.getTopicType(), "Matrix"));
-                payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_CATEGORY.getTopicType(), "ClientServerAPI"));
-                switch (eventInstance.getString("type")) {
+                payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_DEFINER.getTopicType(), "Matrix"));
+                payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_CATEGORY.getTopicType(), "ClientServerAPI"));
+                String messageType = eventInstance.getString("type");
+                switch (messageType) {
+                    case "m.call.answer":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "CallEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_CALL_ANSWER.getEventType()));
+                        break;
+                    case "m.call.candidates":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "CallEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_CALL_CANDIDATES.getEventType()));
+                        break;
+                    case "m.call.hangup":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "CallEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_CALL_HANGUP.getEventType()));
+                        break;
+                    case "m.call.invite":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "CallEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_CALL_INVITE.getEventType()));
+                        break;
+                    case "m.direct":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "UserEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_DIRECT.getEventType()));
+                        break;
+                    case "m.fully_read":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "UserEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_FULLY_READ.getEventType()));
+                        break;
+                    case "m.ignored_user_list":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "UserEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_IGNORED_USER_LIST.getEventType()));
+                        break;
+                    case "m.presence":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "UserEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_PRESENCE.getEventType()));
+                        break;
+                    case "m.receipt":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "UserEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_RECEIPT.getEventType()));
+                        break;
+                    case "m.tag":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "UserEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_TAG.getEventType()));
+                        break;
+                    case "m.typing":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "Typing"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_TYPING.getEventType()));
+                        break;
+                    case "m.policy.rule.room":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "PolicyEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_POLICY_RULE_ROOM.getEventType()));
+                        break;
+                    case "m.policy.rule.server":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "PolicyEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_POLICY_RULE_SERVER.getEventType()));
+                        break;
+                    case "m.policy.rule.user":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "PolicyEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_POLICY_RULE_USER.getEventType()));
+                        break;
+                    case "m.room.canonical_alias":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_ROOM_CANONICAL_ALIAS.getEventType()));
+                        break;
+                    case "m.room.create":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_ROOM_CREATE.getEventType()));
+                        break;
+                    case "m.room.guest_access":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_ROOM_GUEST_ACCESS.getEventType()));
+                        break;
+                    case "m.room.history_visibility":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_ROOM_HISTORY_VISIBILITY.getEventType()));
+                        break;
+                    case "m.room.join_rules":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_ROOM_JOIN_RULES.getEventType()));
+                        break;
+                    case "m.room.member":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_ROOM_MEMBER.getEventType()));
+                        break;
                     case "m.room.message":
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "InstantMessaging"));
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "m.room.message"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_ROOM_MESSAGE.getEventType()));
                         qualifyInstantMessageType(eventInstance, payloadTopicFDN);
                         break;
                     case "m.room.message.feedback":
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "InstantMessaging"));
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "m.room.message.feedback"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_ROOM_MESSAGE_FEEDBACK.getEventType()));
                         break;
                     case "m.room.name":
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "InstantMessaging"));
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "m.room.name"));
-                        break;
-                    case "m.room.topic":
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "InstantMessaging"));
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "m.room.topic"));
-                        break;
-                    case "m.room.avatar":
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "InstantMessaging"));
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "m.room.avatar"));
-                        break;
-                    case "m.room.pinned_events":
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "InstantMessaging"));
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "m.room.pinned_events"));
-                        break;
-                    case "m.room.canonical_alias":
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "m.room.canonical_alias"));
-                        break;
-                    case "m.room.create":
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "m.room.create"));
-                        break;
-                    case "m.room.join_rules":
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "m.room.join_rules"));
-                        break;
-                    case "m.room.member":
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "m.room.member"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_ROOM_NAME.getEventType()));
                         break;
                     case "m.room.power_levels":
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "m.room.power_levels"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_ROOM_POWER_LEVELS.getEventType()));
                         break;
                     case "m.room.redaction":
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "m.room.redaction"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_ROOM_REDACTION.getEventType()));
                         break;
-                    case "m.presence":
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "Presence"));
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "m.presence"));
+                    case "m.room.server_acl":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_ROOM_SERVER_ACL.getEventType()));
                         break;
-                    case "m.typing":
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "Typing"));
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "m.typing"));
+                    case "m.room.third_party_invite":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_ROOM_THIRD_PARTY_INVITE.getEventType()));
+                        break;
+                    case "m.room.tombstone":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), MEventTypeEnum.M_ROOM_TOMBSTONE.getEventType()));
+                        break;
+                    case "m.room.topic":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), "m.room.topic"));
+                        break;
+                    case "m.room.avatar":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), "m.room.avatar"));
+                        break;
+                    case "m.room.pinned_events":
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "RoomEvents"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), "m.room.pinned_events"));
                         break;
                     default:
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "General"));
-                        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "Unknown"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "General"));
+                        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), "Unknown"));
                 }
                 UoWPayload newPayload = new UoWPayload();
-                TopicToken payloadToken = new TopicToken();
-                payloadToken.setIdentifier(payloadTopicFDN.getToken());
+                DataParcelToken payloadToken = new DataParcelToken();
+                payloadToken.setToken(payloadTopicFDN.getToken());
                 payloadToken.setVersion("0.6.1");
+                payloadToken.setNormalisationStatus(DataParcelNormalisationStatusEnum.DATA_PARCEL_CONTENT_NORMALISATION_FALSE);
                 newPayload.setPayload(eventInstance.toString());
                 payloadSet.addPayloadElement(newPayload);
                 if(LOG.isTraceEnabled()){
@@ -140,9 +212,9 @@ public class IncomingMatrixMessageSplitter {
             LOG.debug(".qualifyInstantMessageType(): Exit, message has not content segment");
             return;
         }
-        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_DISCRIMINATOR_TYPE.getTopicType(), "InstantMessagingContentType"));
+        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_DISCRIMINATOR_TYPE.getTopicType(), "Messaging.ContentType"));
         String contentType = content.getString("msgtype");
-        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_DISCRIMINATOR_VALUE.getTopicType(), contentType));
+        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_DISCRIMINATOR_VALUE.getTopicType(), contentType));
         LOG.debug(".qualifyInstantMessageType(): Exit, payloadTopicFDN->{}", payloadTopicFDN);
     }
 }

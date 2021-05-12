@@ -22,8 +22,8 @@
 
 package net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinstatespace.twinpathway.orchestrator.common.caches;
 
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTStimulus;
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTStimulusIdentifier;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.stimulus.MTStimulus;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.stimulus.MTStimulusIdentifier;
 import net.fhirfactory.pegacorn.petasos.model.uow.UoWIdentifier;
 
 import java.util.HashSet;

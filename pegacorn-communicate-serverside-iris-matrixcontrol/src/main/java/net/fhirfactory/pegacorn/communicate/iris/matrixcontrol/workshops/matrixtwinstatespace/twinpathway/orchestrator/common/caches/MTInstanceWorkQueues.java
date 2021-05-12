@@ -22,7 +22,7 @@
 package net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinstatespace.twinpathway.orchestrator.common.caches;
 
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTIdentifier;
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTStimulusPackage;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.stimulus.MTStimulusPackage;
 
 import java.util.Enumeration;
 import java.util.HashSet;

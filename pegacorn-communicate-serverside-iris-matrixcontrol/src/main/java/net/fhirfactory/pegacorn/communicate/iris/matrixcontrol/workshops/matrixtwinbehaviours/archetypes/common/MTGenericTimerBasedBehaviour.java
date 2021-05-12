@@ -22,7 +22,7 @@
 package net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinbehaviours.archetypes.common;
 
 
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTBehaviourTypeEnum;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.behaviours.MTBehaviourTypeEnum;
 
 abstract public class MTGenericTimerBasedBehaviour extends MTGenericBehaviour {
 

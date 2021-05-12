@@ -54,7 +54,14 @@ public abstract class UoWRegistrationBeanBase {
 	protected MTOrchestratorBase getTwinOrchestrator() {
 		return(specifyTwinOrchestrator());
 	}
-	
+
+	/**
+	 *
+	 * @param workPacket
+	 * @param camelExchange
+	 * @param wupKey
+	 * @return
+	 */
 	public UoW registerUoW(WorkUnitTransportPacket workPacket, Exchange camelExchange, String wupKey) {
 		if( topologyProxy == null ) {
 			getLogger().error(".registerUoW(): Guru Software Meditation Error: topologyProxy is null");

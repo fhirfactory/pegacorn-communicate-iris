@@ -25,8 +25,8 @@ package net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.intera
 
 import net.fhirfactory.pegacorn.common.model.generalid.FDN;
 import net.fhirfactory.pegacorn.common.model.generalid.RDN;
-import net.fhirfactory.pegacorn.common.model.topicid.TopicToken;
-import net.fhirfactory.pegacorn.common.model.topicid.TopicTypeEnum;
+import net.fhirfactory.pegacorn.common.model.topicid.DataParcelToken;
+import net.fhirfactory.pegacorn.common.model.topicid.DataParcelTypeKeyEnum;
 import net.fhirfactory.pegacorn.deployment.topology.model.nodes.WorkUnitProcessorTopologyNode;
 import net.fhirfactory.pegacorn.petasos.model.configuration.PetasosPropertyConstants;
 import net.fhirfactory.pegacorn.petasos.model.uow.UoW;
@@ -57,16 +57,16 @@ public class IncomingMatrixEventSet2UoW
         WorkUnitProcessorTopologyNode wupTopologyNode = camelExchange.getProperty(PetasosPropertyConstants.WUP_TOPOLOGY_NODE_EXCHANGE_PROPERTY_NAME, WorkUnitProcessorTopologyNode.class);
         LOG.trace(".encapsulateMatrixMessage(): Creating new Payload element, first the Payload TopicToken");
         FDN payloadTopicFDN = new FDN();
-        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_DEFINER.getTopicType(), "Matrix"));
-        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_CATEGORY.getTopicType(), "ClientServerAPI"));
-        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "General"));
-        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "RawEventSet"));
-        TopicToken payloadTopicToken = new TopicToken();
-        payloadTopicToken.setIdentifier(payloadTopicFDN.getToken());
-        payloadTopicToken.setVersion("0.6.1"); // TODO This version should be set & extracted somewhere
+        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_DEFINER.getTopicType(), "Matrix"));
+        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_CATEGORY.getTopicType(), "ClientServerAPI"));
+        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "General"));
+        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), "RawEventSet"));
+        DataParcelToken payloadDataParcelToken = new DataParcelToken();
+        payloadDataParcelToken.setToken(payloadTopicFDN.getToken());
+        payloadDataParcelToken.setVersion("0.6.1"); // TODO This version should be set & extracted somewhere
         LOG.trace(".encapsulateMatrixMessage(): Creating new Payload element, now the Payload itself");
         UoWPayload contentPayload = new UoWPayload();
-        contentPayload.setPayloadTopicID(payloadTopicToken);
+        contentPayload.setPayloadTopicID(payloadDataParcelToken);
         contentPayload.setPayload(matrixMessage);
         UoW newUoW = new UoW(contentPayload);
         UoWPayloadSet payloadSet = new UoWPayloadSet();

@@ -24,7 +24,7 @@ package net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrix
 import net.fhirfactory.pegacorn.camel.BaseRouteBuilder;
 import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFunctionFDNToken;
 import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeTypeEnum;
-import net.fhirfactory.pegacorn.common.model.topicid.TopicToken;
+import net.fhirfactory.pegacorn.common.model.topicid.DataParcelToken;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinstatespace.twinpathway.orchestrator.common.MTOrchestratorBase;
 import net.fhirfactory.pegacorn.components.interfaces.topology.PegacornTopologyFactoryInterface;
 import net.fhirfactory.pegacorn.components.interfaces.topology.ProcessingPlantInterface;
@@ -35,7 +35,7 @@ import net.fhirfactory.pegacorn.deployment.topology.model.nodes.WorkshopTopology
 import net.fhirfactory.pegacorn.internals.fhir.r4.internal.topics.FHIRElementTopicIDBuilder;
 import net.fhirfactory.pegacorn.petasos.core.moa.brokers.PetasosMOAServicesBroker;
 import net.fhirfactory.pegacorn.petasos.core.moa.pathway.naming.RouteElementNames;
-import net.fhirfactory.pegacorn.petasos.datasets.manager.TopicIM;
+import net.fhirfactory.pegacorn.petasos.datasets.manager.DataParcelSubscriptionIM;
 import net.fhirfactory.pegacorn.petasos.model.wup.WUPArchetypeEnum;
 import net.fhirfactory.pegacorn.petasos.model.wup.WUPIdentifier;
 import net.fhirfactory.pegacorn.petasos.model.wup.WUPJobCard;
@@ -69,7 +69,7 @@ public abstract class MTTypeBaseBehaviourEncapsulatorRouteWUP extends BaseRouteB
     private ProcessingPlantInterface processingPlantServices;
     
     @Inject 
-    private TopicIM topicServer;
+    private DataParcelSubscriptionIM topicServer;
 
     public MTTypeBaseBehaviourEncapsulatorRouteWUP() {
         super();
@@ -137,7 +137,7 @@ public abstract class MTTypeBaseBehaviourEncapsulatorRouteWUP extends BaseRouteB
     public void buildWUPFramework(CamelContext routeContext) {
         getLogger().debug(".buildWUPFramework(): Entry");
         // By default, the set of Topics this WUP subscribes to will be empty - as we need to the Behaviours to initialise first to tell us.
-        Set<TopicToken> emptyTopicList = new HashSet<TopicToken>();
+        Set<DataParcelToken> emptyTopicList = new HashSet<DataParcelToken>();
         WorkUnitProcessorTopologyNode wupNode = (WorkUnitProcessorTopologyNode)this.topologyNode;
         servicesBroker.registerWorkUnitProcessor(wupNode, emptyTopicList, this.getWUPArchetype());
         getLogger().debug(".buildWUPFramework(): Exit");
@@ -183,7 +183,7 @@ public abstract class MTTypeBaseBehaviourEncapsulatorRouteWUP extends BaseRouteB
         return(this.fhirTopicIDBuilder);
     }
     
-    public void requestSubscription(List<TopicToken> tokenList) {
+    public void requestSubscription(List<DataParcelToken> tokenList) {
     	
     }
 
@@ -199,15 +199,15 @@ public abstract class MTTypeBaseBehaviourEncapsulatorRouteWUP extends BaseRouteB
     }
     
     
-    public void subscribeToTopics(Set<TopicToken> subscribedTopics){
+    public void subscribeToTopics(Set<DataParcelToken> subscribedTopics){
         getLogger().debug(".uowTopicSubscribe(): Entry, subscribedTopics --> {}, wupNode --> {}", subscribedTopics, getWUPIdentifier() );
         if(subscribedTopics.isEmpty()){
         	getLogger().debug(".uowTopicSubscribe(): Not topics provided as input, exiting");
             return;
         }
-        Iterator<TopicToken> topicIterator = subscribedTopics.iterator();
+        Iterator<DataParcelToken> topicIterator = subscribedTopics.iterator();
         while(topicIterator.hasNext()) {
-            TopicToken currentTopicID = topicIterator.next();
+            DataParcelToken currentTopicID = topicIterator.next();
             getLogger().trace(".uowTopicSubscribe(): wupNode->{} is subscribing to UoW Content Topic->{}", getTopologyNode().getNodeFDN().getToken(), currentTopicID);
             topicServer.addTopicSubscriber(currentTopicID, getTopologyNode().getNodeFDN().getToken() );
         }
@@ -223,7 +223,7 @@ public abstract class MTTypeBaseBehaviourEncapsulatorRouteWUP extends BaseRouteB
         return processingPlantServices;
     }
 
-    public TopicIM getTopicServer() {
+    public DataParcelSubscriptionIM getTopicServer() {
         return topicServer;
     }
 

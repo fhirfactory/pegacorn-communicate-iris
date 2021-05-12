@@ -22,7 +22,7 @@
 
 package net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinbehaviours.archetypes.framework.worker.twintypecentrc;
 
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTBehaviourOutcomeSet;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.behaviours.MTBehaviourOutcomeSet;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinbehaviours.archetypes.framework.worker.common.MTBehaviourEgressConduit;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinstatespace.twinpathway.orchestrator.PractitionerRoleMTOrchestrator;
 import org.slf4j.Logger;

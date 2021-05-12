@@ -22,7 +22,7 @@
 
 package net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinbehaviours.archetypes.framework.worker.common;
 
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTStimulusPackage;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.stimulus.MTStimulusPackage;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinstatespace.twinpathway.encapsulatorroutes.common.MTBehaviourRouteNames;
 import net.fhirfactory.pegacorn.petasos.core.moa.pathway.naming.PetasosPathwayExchangePropertyNames;
 import org.apache.camel.Exchange;

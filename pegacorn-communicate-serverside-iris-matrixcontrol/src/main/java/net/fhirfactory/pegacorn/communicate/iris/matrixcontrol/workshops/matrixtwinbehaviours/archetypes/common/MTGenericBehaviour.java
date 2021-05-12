@@ -2,8 +2,8 @@ package net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrix
 
 import net.fhirfactory.pegacorn.camel.BaseRouteBuilder;
 import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeTypeEnum;
-import net.fhirfactory.pegacorn.common.model.topicid.TopicToken;
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTBehaviourTypeEnum;
+import net.fhirfactory.pegacorn.common.model.topicid.DataParcelToken;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.behaviours.MTBehaviourTypeEnum;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTTypeEnum;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinbehaviours.archetypes.framework.manager.MTBehaviourRouteManager;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinstatespace.twinpathway.encapsulatorroutes.common.MTBehaviourRouteNames;
@@ -108,7 +108,7 @@ public abstract class MTGenericBehaviour extends BaseRouteBuilder {
     public void buildBehaviourFramework(CamelContext routeContext) {
         getLogger().debug(".buildBehaviourFramework(): Entry");
         // By default, the set of Topics this WUP subscribes to will be empty - as we need to the Behaviours to initialise first to tell us.
-        Set<TopicToken> emptyTopicList = new HashSet<TopicToken>();
+        Set<DataParcelToken> emptyTopicList = new HashSet<DataParcelToken>();
         routeManager.buildBehaviourRoutes(this.getBehaviourNodeElement(), this.getTwinType(), this.getBehaviourType());
         getLogger().debug(".buildBehaviourFramework(): Exit");
     }

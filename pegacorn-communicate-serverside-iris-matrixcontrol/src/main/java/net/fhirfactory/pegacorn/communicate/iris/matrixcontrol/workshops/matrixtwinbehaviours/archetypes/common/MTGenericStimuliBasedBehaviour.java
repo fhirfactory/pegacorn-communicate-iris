@@ -21,11 +21,11 @@
  */
 package net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinbehaviours.archetypes.common;
 
-import net.fhirfactory.pegacorn.common.model.topicid.TopicToken;
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTBehaviourCentricExclusionFilterRulesInterface;
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTBehaviourCentricInclusionFilterRulesInterface;
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTBehaviourIdentifier;
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTBehaviourTypeEnum;
+import net.fhirfactory.pegacorn.common.model.topicid.DataParcelToken;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.behaviours.MTBehaviourCentricExclusionFilterRulesInterface;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.behaviours.MTBehaviourCentricInclusionFilterRulesInterface;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.behaviours.MTBehaviourIdentifier;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.behaviours.MTBehaviourTypeEnum;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinbehaviours.archetypes.framework.manager.MTBehaviourRouteManager;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinstatespace.twinpathway.encapsulatorroutes.common.MTTypeBaseBehaviourEncapsulatorRouteWUP;
 
@@ -63,18 +63,18 @@ public abstract class MTGenericStimuliBasedBehaviour extends MTGenericBehaviour 
      *
      * @return An empty TopicToken set.
      */
-    protected Set<TopicToken> specifySubscriptionTopics() {
+    protected Set<DataParcelToken> specifySubscriptionTopics() {
         getLogger().debug(".specifySubscriptionTopics(): Entry");
         //
         // 1st, lets do the (macro) Topic (Stimulus) registration process
         //
         getLogger().trace(".specifySubscriptionTopics(): First, get the DigitalTwinStimulusSubscriptionCriteriaInterface list");
-        ArrayList<TopicToken> subscribedTopics = new ArrayList<>();
+        ArrayList<DataParcelToken> subscribedTopics = new ArrayList<>();
         for(MTBehaviourCentricInclusionFilterRulesInterface positiveFilterRulesInterface: inclusionFilterSet()){
-            for(TopicToken currentToken: positiveFilterRulesInterface.positiveStaticFilterStimulus()){
+            for(DataParcelToken currentToken: positiveFilterRulesInterface.positiveStaticFilterStimulus()){
                 getLogger().trace(".specifySubscriptionTopics(): Topic of interest --> {}", currentToken);
                 getLogger().trace(".specifySubscriptionTopics(): Now, append the right discriminator so as to get the Topics ONLY from the PubSub service");
-                currentToken.addDescriminator("Source", "Ladon.StateSpace.PubSub");
+                currentToken.addDiscriminator("Source", "Ladon.StateSpace.PubSub");
                 getLogger().trace(".specifySubscriptionTopics(): Call the addTopicToSubscription method on the corresponding CollectorService");
                 subscribedTopics.add(currentToken);
                 getLogger().trace(".specifySubscriptionTopics(): Topic added... continue");
@@ -92,7 +92,7 @@ public abstract class MTGenericStimuliBasedBehaviour extends MTGenericBehaviour 
         //
         // Lastly: return an empty set.
         //
-        HashSet<TopicToken> myTopics = new HashSet<TopicToken>();
+        HashSet<DataParcelToken> myTopics = new HashSet<DataParcelToken>();
         getLogger().debug(".specifySubscriptionTopics(): Exit");
         return(myTopics);
     }

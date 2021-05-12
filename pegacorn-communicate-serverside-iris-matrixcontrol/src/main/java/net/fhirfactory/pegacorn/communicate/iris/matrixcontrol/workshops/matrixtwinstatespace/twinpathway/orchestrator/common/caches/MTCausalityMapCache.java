@@ -21,10 +21,10 @@
  */
 package net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinstatespace.twinpathway.orchestrator.common.caches;
 
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTBehaviourIdentifier;
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTBehaviourProcessingOfStimulusStatusEnum;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.behaviours.MTBehaviourIdentifier;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.behaviours.MTBehaviourProcessingOfStimulusStatusEnum;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTIdentifier;
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTStimulusIdentifier;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.stimulus.MTStimulusIdentifier;
 
 import net.fhirfactory.pegacorn.petasos.model.uow.UoWIdentifier;
 import org.slf4j.Logger;

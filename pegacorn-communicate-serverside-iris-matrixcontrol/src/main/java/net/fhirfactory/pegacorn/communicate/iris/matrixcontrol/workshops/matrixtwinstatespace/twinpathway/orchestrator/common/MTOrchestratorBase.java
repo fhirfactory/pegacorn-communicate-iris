@@ -26,8 +26,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFDN;
 import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFunctionFDNToken;
-import net.fhirfactory.pegacorn.common.model.topicid.TopicToken;
+import net.fhirfactory.pegacorn.common.model.topicid.DataParcelToken;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.*;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.behaviours.*;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.stimulus.MTStimulus;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.stimulus.MTStimulusIdentifier;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.stimulus.MTStimulusPackage;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinstatespace.twinpathway.forwardermap.MatrixTwinInstance2EdgeForwarderMap;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinstatespace.twinpathway.orchestrator.common.caches.*;
 import net.fhirfactory.pegacorn.components.interfaces.topology.ProcessingPlantInterface;
@@ -35,7 +39,7 @@ import net.fhirfactory.pegacorn.deployment.topology.manager.TopologyIM;
 import net.fhirfactory.pegacorn.deployment.topology.model.common.TopologyNode;
 import net.fhirfactory.pegacorn.internals.fhir.r4.internal.topics.FHIRElementTopicIDBuilder;
 import net.fhirfactory.pegacorn.petasos.core.moa.pathway.naming.RouteElementNames;
-import net.fhirfactory.pegacorn.petasos.datasets.manager.TopicIM;
+import net.fhirfactory.pegacorn.petasos.datasets.manager.DataParcelSubscriptionIM;
 import net.fhirfactory.pegacorn.petasos.model.pathway.WorkUnitTransportPacket;
 import net.fhirfactory.pegacorn.petasos.model.resilience.activitymatrix.moa.ParcelStatusElement;
 import net.fhirfactory.pegacorn.petasos.model.resilience.parcel.ResilienceParcelProcessingStatusEnum;
@@ -64,7 +68,7 @@ public abstract class MTOrchestratorBase {
     private ConcurrentHashMap<MTBehaviourIdentifier, MTBehaviourCentricInclusionFilterRulesInterface> inclusionFilterMap;
     private ConcurrentHashMap<MTBehaviourIdentifier, MTBehaviourCentricExclusionFilterRulesInterface> exclusionFilterMap;
     private ConcurrentHashMap<MTIdentifier, MTBehaviourIdentifier> twinInstanceBusyStatus;
-    private List<TopicToken> subscribedTopicList;
+    private List<DataParcelToken> subscribedTopicList;
     private ConcurrentHashMap<MTBehaviourIdentifier, TopologyNode> behaviourSet;
     private MTUoWCache uowCacheMT;
     private MTStimulusCache MTStimulusCache;
@@ -82,7 +86,7 @@ public abstract class MTOrchestratorBase {
     private ProcessingPlantInterface processingPlant;
     
     @Inject
-    private TopicIM topicServer;
+    private DataParcelSubscriptionIM topicServer;
     
     @Resource
     ManagedScheduledExecutorService scheduler;
@@ -265,13 +269,13 @@ public abstract class MTOrchestratorBase {
 				if (outcome.isEchoedToFHIR()) {
 					Set<String> forwarderSet = twinInstance2EdgeForwarderMap.getForwarderAssociation2DigitalTwin(outcome.getAffectingTwin());
 					for (String forwarderInstance : forwarderSet) {
-						TopicToken payloadTopic = fhirTopicBuilder.createTopicToken(outcome.getOutputResource().getResourceType().name(), "4.0.1");
-						payloadTopic.addDescriminator("Destination", forwarderInstance);
+						DataParcelToken payloadTopic = fhirTopicBuilder.createTopicToken(outcome.getOutputResource().getResourceType().name(), "4.0.1");
+						payloadTopic.addDiscriminator("Destination", forwarderInstance);
 						payload.setPayloadTopicID(payloadTopic);
 						theUoW.getEgressContent().addPayloadElement(payload);
 					}
 				} else {
-					TopicToken payloadTopic = fhirTopicBuilder.createTopicToken(outcome.getOutputResource().getResourceType().name(), "4.0.1");
+					DataParcelToken payloadTopic = fhirTopicBuilder.createTopicToken(outcome.getOutputResource().getResourceType().name(), "4.0.1");
 					payload.setPayloadTopicID(payloadTopic);
 					theUoW.getEgressContent().addPayloadElement(payload);
 				}
@@ -340,7 +344,7 @@ public abstract class MTOrchestratorBase {
     	return(specifyTwinType());
     }
     
-	protected List<TopicToken> getSubscribedTopicList(){
+	protected List<DataParcelToken> getSubscribedTopicList(){
 		return(this.subscribedTopicList);
 	}
 	
@@ -363,11 +367,11 @@ public abstract class MTOrchestratorBase {
     //
     //
 
-	public void requestSubscription(List<TopicToken> topicList) {
+	public void requestSubscription(List<DataParcelToken> topicList) {
 		getSubscribedTopicList().addAll(topicList);
 		if(getAssociatedBehaviourEncapsulatorNode() != null) {
-			for (TopicToken topicToken : getSubscribedTopicList()) {
-				topicServer.addTopicSubscriber(topicToken, getAssociatedBehaviourEncapsulatorNode().getContainingNodeFDN().getToken());
+			for (DataParcelToken dataParcelToken : getSubscribedTopicList()) {
+				topicServer.addTopicSubscriber(dataParcelToken, getAssociatedBehaviourEncapsulatorNode().getContainingNodeFDN().getToken());
 			}
 		}
 	}

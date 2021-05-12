@@ -21,7 +21,7 @@
  */
 package net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinstatespace.twinpathway.encapsulatorroutes.common.beans;
 
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTStimulus;
+import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.stimulus.MTStimulus;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.matrixtwinstatespace.twinpathway.orchestrator.common.MTOrchestratorBase;
 import org.slf4j.Logger;
 

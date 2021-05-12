@@ -25,8 +25,8 @@ package net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.intera
 
 import net.fhirfactory.pegacorn.common.model.generalid.FDN;
 import net.fhirfactory.pegacorn.common.model.generalid.RDN;
-import net.fhirfactory.pegacorn.common.model.topicid.TopicToken;
-import net.fhirfactory.pegacorn.common.model.topicid.TopicTypeEnum;
+import net.fhirfactory.pegacorn.common.model.topicid.DataParcelToken;
+import net.fhirfactory.pegacorn.common.model.topicid.DataParcelTypeKeyEnum;
 import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.interact.ingres.beans.IncomingMatrixMessageSplitter;
 import net.fhirfactory.pegacorn.components.interfaces.topology.WorkshopInterface;
 import net.fhirfactory.pegacorn.workshops.InteractWorkshop;
@@ -56,19 +56,19 @@ public class MatrixApplicationServicesEventsSeperatorWUP extends MOAStandardWUP 
     private InteractWorkshop workshop;
     
     @Override
-    public Set<TopicToken> specifySubscriptionTopics() {
+    public Set<DataParcelToken> specifySubscriptionTopics() {
         LOG.debug(".getSubscribedTopics(): Entry");
         LOG.trace(".getSubscribedTopics(): Creating new TopicToken");
         FDN payloadTopicFDN = new FDN();
-        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_DEFINER.getTopicType(), "Matrix"));
-        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_CATEGORY.getTopicType(), "ClientServerAPI"));
-        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_SUBCATEGORY.getTopicType(), "General"));
-        payloadTopicFDN.appendRDN(new RDN(TopicTypeEnum.DATASET_RESOURCE.getTopicType(), "RawEventSet"));
-        TopicToken payloadTopicToken = new TopicToken();
-        payloadTopicToken.setIdentifier(payloadTopicFDN.getToken());
-        payloadTopicToken.setVersion("1.0.0"); // TODO This version should be set & extracted somewhere
-        HashSet<TopicToken> myTopicsOfInterest = new HashSet<TopicToken>();
-        myTopicsOfInterest.add(payloadTopicToken);
+        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_DEFINER.getTopicType(), "Matrix"));
+        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_CATEGORY.getTopicType(), "ClientServerAPI"));
+        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType(), "General"));
+        payloadTopicFDN.appendRDN(new RDN(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType(), "RawEventSet"));
+        DataParcelToken payloadDataParcelToken = new DataParcelToken();
+        payloadDataParcelToken.setToken(payloadTopicFDN.getToken());
+        payloadDataParcelToken.setVersion("1.0.0"); // TODO This version should be set & extracted somewhere
+        HashSet<DataParcelToken> myTopicsOfInterest = new HashSet<DataParcelToken>();
+        myTopicsOfInterest.add(payloadDataParcelToken);
         LOG.debug("getSubscribedTopics(): Exit, myTopicsOfInterest --> {}", myTopicsOfInterest);
         return(myTopicsOfInterest);
     }
