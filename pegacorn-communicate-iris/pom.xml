@@ -21,10 +21,7 @@
     
     <modules>
         <module>../pegacorn-communicate-iris-fhirbridge</module>
-	<module>../pegacorn-communicate-iris-matrixbridge</module>
-	<module>../pegacorn-communicate-iris-matrixcontrol</module>
         <module>../pegacorn-communicate-iris-statespace</module>
-    	<module>../pegacorn-communicate-iris-fhircontrol</module>
         <module>../pegacorn-communicate-iris-workflow</module>
         <module>../pegacorn-communicate-iris-subsystem</module>
     </modules>
