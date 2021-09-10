@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Mark A. Hunter
+ * Copyright (c) 2021 Mark A. Hunter
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,33 +19,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.fhirfactory.pegacorn.communicate.iris.statespace.common;
+package net.fhirfactory.pegacorn.communicate.iris.workflow.practitionerrole;
 
-import net.fhirfactory.pegacorn.communicate.iris.statespace.CommunicateStateSpaceWorkshop;
-import net.fhirfactory.pegacorn.components.interfaces.topology.WorkshopInterface;
-import net.fhirfactory.pegacorn.petasos.model.wup.WUPArchetypeEnum;
-import net.fhirfactory.pegacorn.wups.archetypes.petasosenabled.messageprocessingbased.MOAStandardWUP;
+import net.fhirfactory.pegacorn.communicate.iris.workflow.common.EntityControllerWUPBase;
+import net.fhirfactory.pegacorn.components.dataparcel.DataParcelManifest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
+import javax.enterprise.context.ApplicationScoped;
+import java.util.List;
 
-public abstract class MTPathwayMOAWUP extends MOAStandardWUP {
+@ApplicationScoped
+public class PractitionerRoleControllerWUP extends EntityControllerWUPBase {
+    private static final Logger LOG = LoggerFactory.getLogger(PractitionerRoleControllerWUP.class);
 
-    @Inject
-    private CommunicateStateSpaceWorkshop workshop;
-
-    public MTPathwayMOAWUP() {
-        super();
+    @Override
+    protected Logger specifyLogger() {
+        return (LOG);
     }
 
     @Override
-    protected WUPArchetypeEnum specifyWUPArchetype(){
-        return(WUPArchetypeEnum.WUP_NATURE_IRIS_MATRIXCONTROL_PATHWAY);
+    protected List<DataParcelManifest> specifySubscriptionTopics() {
+        return null;
     }
 
     @Override
-    protected WorkshopInterface specifyWorkshop() {
-        return (workshop);
+    protected String specifyWUPInstanceVersion() {
+        return null;
     }
 
+    @Override
+    public void configure() throws Exception {
 
+    }
 }

@@ -25,21 +25,29 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFDN;
-import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeRDN;
-import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeTypeEnum;
-import net.fhirfactory.pegacorn.common.model.generalid.FDN;
-import net.fhirfactory.pegacorn.common.model.topicid.DataParcelToken;
-import net.fhirfactory.pegacorn.common.model.topicid.DataParcelTypeKeyEnum;
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.stimulus.MTStimulus;
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.stimulus.MTStimulusIdentifier;
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.stimulus.MTStimulusReasonTypeEnum;
+import net.fhirfactory.pegacorn.components.dataparcel.DataParcelManifest;
 import net.fhirfactory.pegacorn.components.interfaces.topology.ProcessingPlantInterface;
-import net.fhirfactory.pegacorn.internals.esr.resources.*;
+import net.fhirfactory.pegacorn.internals.communicate.entities.careteam.CommunicateCareTeam;
+import net.fhirfactory.pegacorn.internals.communicate.entities.coderesponderteam.CommunicateCodeResponderTeam;
+import net.fhirfactory.pegacorn.internals.communicate.entities.common.valuesets.CommunicateResourceTypeEnum;
+import net.fhirfactory.pegacorn.internals.communicate.entities.group.CommunicateGroup;
+import net.fhirfactory.pegacorn.internals.communicate.entities.healthcareservice.CommunicateHealthcareService;
+import net.fhirfactory.pegacorn.internals.communicate.entities.location.CommunicateLocation;
+import net.fhirfactory.pegacorn.internals.communicate.entities.media.CommunicateMedia;
+import net.fhirfactory.pegacorn.internals.communicate.entities.message.CommunicateMessage;
+import net.fhirfactory.pegacorn.internals.communicate.entities.organization.CommunicateOrganization;
+import net.fhirfactory.pegacorn.internals.communicate.entities.patient.CommunicatePatient;
+import net.fhirfactory.pegacorn.internals.communicate.entities.practitioner.CommunicatePractitioner;
+import net.fhirfactory.pegacorn.internals.communicate.entities.practitionerrole.CommunicatePractitionerRole;
+import net.fhirfactory.pegacorn.internals.communicate.entities.rooms.*;
+import net.fhirfactory.pegacorn.internals.communicate.entities.session.CommunicateSession;
+import net.fhirfactory.pegacorn.internals.communicate.entities.user.CommunicateUser;
+import net.fhirfactory.pegacorn.internals.communicate.workflow.model.stimulus.CDTStimulus;
+import net.fhirfactory.pegacorn.internals.communicate.workflow.model.stimulus.CDTStimulusIdentifier;
 import net.fhirfactory.pegacorn.internals.esr.resources.common.ExtremelySimplifiedResource;
-import net.fhirfactory.pegacorn.internals.esr.resources.valuesets.ExtremelySimplifiedResourceTypeEnum;
 import net.fhirfactory.pegacorn.petasos.model.uow.UoW;
 import net.fhirfactory.pegacorn.petasos.model.uow.UoWPayload;
+import org.apache.commons.lang3.SerializationUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,54 +88,44 @@ public class UoW2StimulusListBean {
 	 * @param incomingUoW
 	 * @return
 	 */
-	public List<MTStimulus> convertUoWContent2StimulusList(UoW incomingUoW){
+	public List<CDTStimulus> convertUoWContent2StimulusList(UoW incomingUoW){
         LOG.debug(".convertUoWContent2StimulusList(): Entry, incomingUoW (UoW) --> {}", incomingUoW);
-        List<MTStimulus> stimulusList = new ArrayList<MTStimulus>();
-		DataParcelToken payloadTopicID = incomingUoW.getPayloadTopicID();
-		FDN payloadFDN = new FDN(payloadTopicID.getToken());
-        String definer = payloadFDN.extractRDNViaQualifier(DataParcelTypeKeyEnum.DATASET_DEFINER.getTopicType()).getValue();
-        String category = payloadFDN.extractRDNViaQualifier(DataParcelTypeKeyEnum.DATASET_CATEGORY.getTopicType()).getValue();
-        String subcategory = payloadFDN.extractRDNViaQualifier(DataParcelTypeKeyEnum.DATASET_SUBCATEGORY.getTopicType()).getValue();
-		String resourceTypeName = payloadFDN.extractRDNViaQualifier(DataParcelTypeKeyEnum.DATASET_RESOURCE.getTopicType()).getValue();
+        List<CDTStimulus> stimulusList = new ArrayList<CDTStimulus>();
+		DataParcelManifest payloadTopicID = SerializationUtils.clone(incomingUoW.getPayloadTopicID());
 
-        // check if ESR
-		boolean isFHIRFactory = definer.contentEquals("FHIRFactory");
-		boolean isDirectoryServices = category.contentEquals("DirectoryServices");
-		boolean isExtremelySimplifiedResources = subcategory.contentEquals("ExtremelySimplifiedResources");
-		// check if Matrix
-		boolean isMatrix = definer.contentEquals("Matrix");
-		boolean isMatrixClientServices = category.contentEquals("ClientServerAPI");
+		boolean isFHIRFactory = false;
+		boolean isCollaboration = false;
+		boolean isCommunicate = false;
 
-		MTStimulusReasonTypeEnum reason = null;
-		if(isFHIRFactory && isDirectoryServices && isExtremelySimplifiedResources){
-			reason = MTStimulusReasonTypeEnum.MT_STIMULUS_REASON_ESR_EVENT;
-		}
-		if(isMatrix && isMatrixClientServices){
-			reason = MTStimulusReasonTypeEnum.MT_STIMULUS_REASON_MATRIX_EVENT;
-		}
-		MTStimulus stimulus = null;
-    	switch(reason) {
-			case MTStimulusReasonTypeEnum.MT_STIMULUS_REASON_ESR_EVENT:{
-    			stimulus = deriveStimulusFromUoWPayloadForESR(incomingUoW.getIngresContent(), resourceTypeName);
-    			break;
-    		}
-			case MTStimulusReasonTypeEnum.MT_STIMULUS_REASON_MATRIX_EVENT:{
-				stimulus = deriveStimulusFromUoWForMatrixEvent(incomingUoW.getIngresContent(), resourceTypeName);
+		if(payloadTopicID.getContentDescriptor().hasDataParcelDefiner()){
+			if(payloadTopicID.getContentDescriptor().getDataParcelDefiner().contentEquals(CommunicateResourceTypeEnum.getDataParcelDefiner())){
+				isFHIRFactory = true;
 			}
-    		default:{
-				// Do nothing
-    		}
-    	}
-    	if(stimulus != null){
-    		stimulus.setOriginalUoW(incomingUoW.getInstanceID());
-    		TopologyNodeFDN processingPlantFDN = processingPlant.getProcessingPlantNode().getNodeFDN();
-    		TopologyNodeRDN processingPlantRDN = processingPlantFDN.extractRDNForNodeType(TopologyNodeTypeEnum.PROCESSING_PLANT);
-    		String simpleProcessingPlantName = processingPlantRDN.getNodeName()+processingPlantRDN.getNodeVersion().replace(".","");
-    		String stimulusIdentifierValue = simpleProcessingPlantName +"-"+incomingUoW.getInstanceID().toString();
-    		MTStimulusIdentifier stimulusIdentifier = new MTStimulusIdentifier();
-    		stimulusIdentifier.setId(stimulusIdentifierValue);
-    		stimulus.setStimulusID(stimulusIdentifier);
-			stimulusList.add(stimulus);
+		}
+		if(payloadTopicID.getContentDescriptor().hasDataParcelCategory()){
+			if(payloadTopicID.getContentDescriptor().getDataParcelCategory().contentEquals(CommunicateResourceTypeEnum.getDataParcelCategory())){
+				isCollaboration = true;
+			}
+		}
+		if(payloadTopicID.getContentDescriptor().hasDataParcelSubCategory()){
+			if(payloadTopicID.getContentDescriptor().getDataParcelSubCategory().contentEquals(CommunicateResourceTypeEnum.getDataParcelSubCategory())){
+				isCommunicate = true;
+			}
+		}
+		CDTStimulus stimulus;
+		if(isFHIRFactory && isCollaboration && isCommunicate) {
+			CommunicateResourceTypeEnum resourceType = CommunicateResourceTypeEnum.fromResourceName(payloadTopicID.getContentDescriptor().getDataParcelResource());
+			if (resourceType != null) {
+				stimulus = deriveStimulusFromUoWPayload(incomingUoW.getIngresContent(), resourceType);
+				if (stimulus != null) {
+					stimulus.setOriginalUoW(incomingUoW.getInstanceID());
+					CDTStimulusIdentifier identifier = new CDTStimulusIdentifier();
+					identifier.setId(stimulus.getResource().getSimplifiedID());
+					identifier.setResourceType(resourceType);
+					stimulus.setStimulusID(identifier);
+					stimulusList.add(stimulus);
+				}
+			}
 		}
    		return(stimulusList);
     }
@@ -138,48 +136,77 @@ public class UoW2StimulusListBean {
 	 * @param resourceTypeString
 	 * @return
 	 */
-	private MTStimulus deriveStimulusFromUoWPayloadForESR(UoWPayload payload, String resourceTypeString) {
-		MTStimulus stimulus = new MTStimulus();
+	private CDTStimulus deriveStimulusFromUoWPayload(UoWPayload payload, CommunicateResourceTypeEnum resourceTypeString) {
+		CDTStimulus stimulus = new CDTStimulus();
     	String payloadContent = payload.getPayload();
-		ExtremelySimplifiedResourceTypeEnum resourceType = ExtremelySimplifiedResourceTypeEnum.fromString(resourceTypeString);
     	ExtremelySimplifiedResource resource = null;
     	try {
-			switch (resourceType){
-				case ESR_CARE_TEAM:
-					resource = getJsonMapper().readValue(payloadContent, CareTeamESR.class);
+			switch (resourceTypeString){
+				case COMMUNICATE_GROUP:
+					resource = getJsonMapper().readValue(payloadContent, CommunicateGroup.class);
 					break;
-				case ESR_GROUP:
-					resource = getJsonMapper().readValue(payloadContent, GroupESR.class);
+				case COMMUNICATE_CARETEAM:
+					resource = getJsonMapper().readValue(payloadContent, CommunicateCareTeam.class);
 					break;
-				case ESR_HEALTHCARE_SERVICE:
-					resource = getJsonMapper().readValue(payloadContent, HealthcareServiceESR.class);
+				case COMMUNICATE_CODE_RESPONDER_TEAM:
+					resource = getJsonMapper().readValue(payloadContent, CommunicateCodeResponderTeam.class);
 					break;
-				case ESR_LOCATION:
-					resource = getJsonMapper().readValue(payloadContent, LocationESR.class);
+				case COMMUNICATE_HEALTHCARESERVICE:
+					resource = getJsonMapper().readValue(payloadContent, CommunicateHealthcareService.class);
 					break;
-				case ESR_MATRIX_ROOM:
-					resource = getJsonMapper().readValue(payloadContent, MatrixRoomESR.class);
+				case COMMUNICATE_LOCATION:
+					resource = getJsonMapper().readValue(payloadContent, CommunicateLocation.class);
 					break;
-				case ESR_ORGANIZATION:
-					resource = getJsonMapper().readValue(payloadContent, OrganizationESR.class);
+				case COMMUNICATE_MEDIA:
+					resource = getJsonMapper().readValue(payloadContent, CommunicateMedia.class);
 					break;
-				case ESR_PATIENT:
-					resource = getJsonMapper().readValue(payloadContent, PatientESR.class);
+				case COMMUNICATE_MESSAGE:
+					resource = getJsonMapper().readValue(payloadContent, CommunicateMessage.class);
 					break;
-				case ESR_PERSON:
-					resource = getJsonMapper().readValue(payloadContent, PersonESR.class);
+				case COMMUNICATE_ORGANIZATION:
+					resource = getJsonMapper().readValue(payloadContent, CommunicateOrganization.class);
 					break;
-				case ESR_PRACTITIONER:
-					resource = getJsonMapper().readValue(payloadContent, PractitionerESR.class);
+				case COMMUNICATE_PATIENT:
+					resource = getJsonMapper().readValue(payloadContent, CommunicatePatient.class);
 					break;
-				case ESR_PRACTITIONER_ROLE:
-					resource = getJsonMapper().readValue(payloadContent, PractitionerRoleESR.class);
+				case COMMUNICATE_PRACTITIONER:
+					resource = getJsonMapper().readValue(payloadContent, CommunicatePractitioner.class);
 					break;
-				case ESR_ROLE:
-					resource = getJsonMapper().readValue(payloadContent, RoleESR.class);
+				case COMMUNICATE_PRACTITIONER_ROLE:
+					resource = getJsonMapper().readValue(payloadContent, CommunicatePractitionerRole.class);
 					break;
-				case ESR_ROLE_CATEGORY:
-					resource = getJsonMapper().readValue(payloadContent, RoleCategoryESR.class);
+				case COMMUNICATE_ROOM:
+					resource = getJsonMapper().readValue(payloadContent, CommunicateRoom.class);
+					break;
+				case COMMUNICATE_ROOM_CODE_RESPONDER:
+					resource = getJsonMapper().readValue(payloadContent, CommunicateCodeResponderRoom.class);
+					break;
+				case COMMUNICATE_ROOM_HISTORIC:
+					resource = getJsonMapper().readValue(payloadContent, CommunicateHistoricRoom.class);
+					break;
+				case COMMUNICATE_ROOM_PATIENT_CENTRAL:
+					resource = getJsonMapper().readValue(payloadContent, CommunicatePatientCentralRoom.class);
+					break;
+				case COMMUNICATE_ROOM_PATIENT_CENTRAL_TASK_FULFILLMENT:
+					resource = getJsonMapper().readValue(payloadContent, CommunicatePatientCentricTaskFulfilmentRoom.class);
+					break;
+				case COMMUNICATE_ROOM_PRACTITIONER_MY_CALLS:
+					resource = getJsonMapper().readValue(payloadContent, CommunicatePractitionerMyCallsRoom.class);
+					break;
+				case COMMUNICATE_ROOM_PRACTITIONER_MY_MEDIA:
+					resource = getJsonMapper().readValue(payloadContent, CommunicatePractitionerMyMediaRoom.class);
+					break;
+				case COMMUNICATE_ROOM_PRACTITIONER_ROLE_CENTRAL:
+					resource = getJsonMapper().readValue(payloadContent, CommunicatePractitionerRoleCentralRoom.class);
+					break;
+				case COMMUNICATE_ROOM_PRACTITIONER_ROLE_FULFILLMENT:
+					resource = getJsonMapper().readValue(payloadContent, CommunicatePractitionerRoleFulfilmentRoom.class);
+					break;
+				case COMMUNICATE_SESSION:
+					resource = getJsonMapper().readValue(payloadContent, CommunicateSession.class);
+					break;
+				case COMMUNICATE_USER:
+					resource = getJsonMapper().readValue(payloadContent, CommunicateUser.class);
 					break;
 				default:
 					resource = null;

@@ -24,14 +24,13 @@ package net.fhirfactory.pegacorn.communicate.iris.statespace.entityplane.accesso
 import net.fhirfactory.pegacorn.communicate.iris.statespace.entityplane.accessors.common.EntityPlaneUpdateOriginEnum;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.entityplane.matrixdomain.PractitionerMatrixDomainServices;
 import net.fhirfactory.pegacorn.internals.communicate.entities.practitioner.CommunicatePractitioner;
-import net.fhirfactory.pegacorn.internals.communicate.entities.rooms.CommunicateRoom;
 import net.fhirfactory.pegacorn.internals.communicate.entities.rooms.CommunicatePractitionerRoleFulfilmentRoom;
-import net.fhirfactory.pegacorn.internals.esr.brokers.MatrixRoomESRBroker;
+import net.fhirfactory.pegacorn.internals.communicate.entities.rooms.CommunicateRoom;
 import net.fhirfactory.pegacorn.internals.esr.brokers.PractitionerESRBroker;
-import net.fhirfactory.pegacorn.internals.esr.resources.valuesets.IdentifierESDTTypesEnum;
 import net.fhirfactory.pegacorn.internals.esr.resources.common.ExtremelySimplifiedResource;
 import net.fhirfactory.pegacorn.internals.esr.resources.search.exceptions.ESRPaginationException;
 import net.fhirfactory.pegacorn.internals.esr.resources.search.exceptions.ESRSortingException;
+import net.fhirfactory.pegacorn.internals.esr.resources.valuesets.IdentifierESDTTypesEnum;
 import net.fhirfactory.pegacorn.internals.esr.transactions.ESRMethodOutcome;
 import net.fhirfactory.pegacorn.internals.esr.transactions.exceptions.ResourceInvalidSearchException;
 import net.fhirfactory.pegacorn.internals.esr.transactions.exceptions.ResourceInvalidSortException;
@@ -62,7 +61,7 @@ public class CommunicatePractitionerAccessor extends PractitionerESRBroker{
     }
 
     @Override
-    protected MatrixRoomESRBroker specifyMatrixRoomESRBroker(){
+    protected CommunicateRoomAccessor specifyMatrixRoomESRBroker(){
         return(communicateRoomAccessor);
     }
 

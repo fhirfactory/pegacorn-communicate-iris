@@ -21,8 +21,8 @@
  */
 package net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.orchestrator;
 
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTTypeEnum;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.orchestrator.common.CDTOrchestratorBase;
+import net.fhirfactory.pegacorn.internals.communicate.entities.common.valuesets.CommunicateResourceTypeEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +36,7 @@ public class GroupCDTOrchestrator extends CDTOrchestratorBase {
     protected Logger specifyLogger(){return(LOG);}
 
     @Override
-    protected MTTypeEnum specifyTwinType() {
-        return (MTTypeEnum.MATRIX_TWIN_GROUP);
+    protected CommunicateResourceTypeEnum specifyTwinType() {
+        return (CommunicateResourceTypeEnum.COMMUNICATE_GROUP);
     }
 }

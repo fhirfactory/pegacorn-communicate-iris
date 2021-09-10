@@ -21,13 +21,12 @@
  */
 package net.fhirfactory.pegacorn.communicate.iris.statespace.entityplane.matrixdomain;
 
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.actions.complexactions.CommunicatePractitionerRoleCentralRoomActions;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.common.api.CommunicatePractitionerRoleDomainInterface;
+import net.fhirfactory.pegacorn.communicate.matrixbridge.workshops.transform.api.CommunicatePractitionerRoleMatrixAPI;
 import net.fhirfactory.pegacorn.internals.communicate.entities.practitioner.CommunicatePractitioner;
 import net.fhirfactory.pegacorn.internals.communicate.entities.practitionerrole.CommunicatePractitionerRole;
 import net.fhirfactory.pegacorn.internals.communicate.entities.rooms.CommunicatePractitionerRoleCentralRoom;
 import net.fhirfactory.pegacorn.internals.communicate.entities.rooms.CommunicatePractitionerRoleFulfilmentRoom;
-import net.fhirfactory.pegacorn.internals.communicate.entities.rooms.CommunicateRoom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +38,7 @@ public class PractitionerRoleMatrixDomainServices implements CommunicatePractiti
     private static final Logger LOG = LoggerFactory.getLogger(PractitionerRoleMatrixDomainServices.class);
 
     @Inject
-    private CommunicatePractitionerRoleCentralRoomActions practitionerRoleCentralRoomActions;
+    private CommunicatePractitionerRoleMatrixAPI practitionerRoleCentralRoomActions;
 
     //
     // PractitionerRole Central Room Activities
@@ -52,9 +51,7 @@ public class PractitionerRoleMatrixDomainServices implements CommunicatePractiti
      */
     @Override
     public CommunicatePractitionerRoleCentralRoom activatePractitionerRole(CommunicatePractitionerRole practitionerRole){
-        CommunicateRoom room = practitionerRoleCentralRoomActions.createPractitionerRoleCentralRoom(practitionerRole);
-        CommunicatePractitionerRoleCentralRoom practitionerRoleCentralRoom = (CommunicatePractitionerRoleCentralRoom)room;
-        return(practitionerRoleCentralRoom);
+        return(null);
     }
 
     /**

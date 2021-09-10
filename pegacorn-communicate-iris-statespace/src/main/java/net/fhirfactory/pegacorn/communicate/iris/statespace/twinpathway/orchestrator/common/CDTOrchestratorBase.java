@@ -25,23 +25,31 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFDN;
-import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFunctionFDNToken;
-import net.fhirfactory.pegacorn.common.model.topicid.DataParcelToken;
+import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFDNToken;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.forwardermap.CDTInstance2EdgeForwarderMap;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.orchestrator.common.caches.*;
+import net.fhirfactory.pegacorn.components.dataparcel.DataParcelManifest;
+import net.fhirfactory.pegacorn.components.dataparcel.DataParcelTypeDescriptor;
+import net.fhirfactory.pegacorn.components.dataparcel.valuesets.DataParcelDirectionEnum;
+import net.fhirfactory.pegacorn.components.dataparcel.valuesets.DataParcelNormalisationStatusEnum;
+import net.fhirfactory.pegacorn.components.dataparcel.valuesets.DataParcelValidationStatusEnum;
+import net.fhirfactory.pegacorn.components.dataparcel.valuesets.PolicyEnforcementPointApprovalStatusEnum;
 import net.fhirfactory.pegacorn.components.interfaces.topology.ProcessingPlantInterface;
 import net.fhirfactory.pegacorn.deployment.topology.manager.TopologyIM;
 import net.fhirfactory.pegacorn.deployment.topology.model.common.TopologyNode;
+import net.fhirfactory.pegacorn.internals.communicate.entities.common.valuesets.CommunicateResourceTypeEnum;
 import net.fhirfactory.pegacorn.internals.communicate.workflow.model.CDTIdentifier;
-import net.fhirfactory.pegacorn.internals.communicate.workflow.model.CDTTypeEnum;
 import net.fhirfactory.pegacorn.internals.communicate.workflow.model.behaviours.*;
 import net.fhirfactory.pegacorn.internals.communicate.workflow.model.stimulus.CDTStimulus;
 import net.fhirfactory.pegacorn.internals.communicate.workflow.model.stimulus.CDTStimulusIdentifier;
 import net.fhirfactory.pegacorn.internals.communicate.workflow.model.stimulus.CDTStimulusPackage;
-import net.fhirfactory.pegacorn.internals.fhir.r4.internal.topics.FHIRElementTopicIDBuilder;
+import net.fhirfactory.pegacorn.internals.fhir.r4.internal.topics.FHIRElementTopicFactory;
 import net.fhirfactory.pegacorn.petasos.core.moa.pathway.naming.RouteElementNames;
-import net.fhirfactory.pegacorn.petasos.datasets.manager.DataParcelSubscriptionIM;
+import net.fhirfactory.pegacorn.petasos.datasets.manager.DataParcelSubscriptionMapIM;
 import net.fhirfactory.pegacorn.petasos.model.pathway.WorkUnitTransportPacket;
+import net.fhirfactory.pegacorn.petasos.model.pubsub.IntraSubsystemPubSubParticipant;
+import net.fhirfactory.pegacorn.petasos.model.pubsub.IntraSubsystemPubSubParticipantIdentifier;
+import net.fhirfactory.pegacorn.petasos.model.pubsub.PubSubParticipant;
 import net.fhirfactory.pegacorn.petasos.model.resilience.activitymatrix.moa.ParcelStatusElement;
 import net.fhirfactory.pegacorn.petasos.model.resilience.parcel.ResilienceParcelProcessingStatusEnum;
 import net.fhirfactory.pegacorn.petasos.model.uow.UoW;
@@ -69,7 +77,7 @@ public abstract class CDTOrchestratorBase {
     private ConcurrentHashMap<CDTBehaviourIdentifier, CDTBehaviourCentricInclusionFilterRulesInterface> inclusionFilterMap;
     private ConcurrentHashMap<CDTBehaviourIdentifier, CDTBehaviourCentricExclusionFilterRulesInterface> exclusionFilterMap;
     private ConcurrentHashMap<CDTIdentifier, CDTBehaviourIdentifier> twinInstanceBusyStatus;
-    private List<DataParcelToken> subscribedTopicList;
+    private List<DataParcelManifest> subscribedTopicList;
     private ConcurrentHashMap<CDTBehaviourIdentifier, TopologyNode> behaviourSet;
     private CDTUoWCache uowCacheMT;
     private CDTStimulusCache CDTStimulusCache;
@@ -87,7 +95,7 @@ public abstract class CDTOrchestratorBase {
     private ProcessingPlantInterface processingPlant;
     
     @Inject
-    private DataParcelSubscriptionIM topicServer;
+    private DataParcelSubscriptionMapIM topicServer;
     
     @Resource
     ManagedScheduledExecutorService scheduler;
@@ -99,7 +107,7 @@ public abstract class CDTOrchestratorBase {
     private CamelContext camelCTX;
 
     @Inject
-	private FHIRElementTopicIDBuilder fhirTopicBuilder;
+	private FHIRElementTopicFactory fhirTopicBuilder;
 
     @Inject
 	private FHIRContextUtility fhirContextUtility;
@@ -222,7 +230,7 @@ public abstract class CDTOrchestratorBase {
 			return;
 		}
 		TopologyNode behaviourNode = behaviourSet.get(behaviourId);
-		RouteElementNames nameSet = new RouteElementNames(behaviourNode.getNodeFunctionFDN().getFunctionToken());
+		RouteElementNames nameSet = new RouteElementNames(behaviourNode.getNodeFDN().getToken());
 		ProducerTemplate prodTemplate = camelCTX.createProducerTemplate();
 		prodTemplate.sendBody(nameSet.getEndPointWUPContainerIngresProcessorIngres(), stimulusPkg);
 	}
@@ -271,14 +279,28 @@ public abstract class CDTOrchestratorBase {
 				if (outcome.isEchoedToFHIR()) {
 					Set<String> forwarderSet = twinInstance2EdgeForwarderMap.getForwarderAssociation2DigitalTwin(outcome.getAffectingTwin());
 					for (String forwarderInstance : forwarderSet) {
-						DataParcelToken payloadTopic = fhirTopicBuilder.createTopicToken(outcome.getOutputResource().getResourceESRType().name(), "4.0.1");
-						payloadTopic.addDiscriminator("Destination", forwarderInstance);
-						payload.setPayloadTopicID(payloadTopic);
+						DataParcelTypeDescriptor payloadTopic = fhirTopicBuilder.newTopicToken(outcome.getOutputResource().getResourceESRType().name(), "4.0.1");
+						DataParcelManifest manifest = new DataParcelManifest();
+						manifest.setContentDescriptor(payloadTopic);
+						manifest.setNormalisationStatus(DataParcelNormalisationStatusEnum.DATA_PARCEL_CONTENT_NORMALISATION_TRUE);
+						manifest.setValidationStatus(DataParcelValidationStatusEnum.DATA_PARCEL_CONTENT_VALIDATED_TRUE);
+						manifest.setDataParcelFlowDirection(DataParcelDirectionEnum.WORKFLOW_OUTPUT_DATA_PARCEL);
+						manifest.setEnforcementPointApprovalStatus(PolicyEnforcementPointApprovalStatusEnum.POLICY_ENFORCEMENT_POINT_APPROVAL_NEGATIVE);
+						manifest.setSourceSystem(processingPlant.getIPCServiceName());
+						manifest.setIntendedTargetSystem(forwarderInstance);
+						payload.setPayloadManifest(manifest);
 						theUoW.getEgressContent().addPayloadElement(payload);
 					}
 				} else {
-					DataParcelToken payloadTopic = fhirTopicBuilder.createTopicToken(outcome.getOutputResource().getResourceESRType().name(), "4.0.1");
-					payload.setPayloadTopicID(payloadTopic);
+					DataParcelTypeDescriptor payloadTopic = fhirTopicBuilder.newTopicToken(outcome.getOutputResource().getResourceESRType().name(), "4.0.1");
+					DataParcelManifest manifest = new DataParcelManifest();
+					manifest.setContentDescriptor(payloadTopic);
+					manifest.setNormalisationStatus(DataParcelNormalisationStatusEnum.DATA_PARCEL_CONTENT_NORMALISATION_TRUE);
+					manifest.setValidationStatus(DataParcelValidationStatusEnum.DATA_PARCEL_CONTENT_VALIDATED_TRUE);
+					manifest.setDataParcelFlowDirection(DataParcelDirectionEnum.WORKFLOW_OUTPUT_DATA_PARCEL);
+					manifest.setEnforcementPointApprovalStatus(PolicyEnforcementPointApprovalStatusEnum.POLICY_ENFORCEMENT_POINT_APPROVAL_NEGATIVE);
+					manifest.setSourceSystem(processingPlant.getIPCServiceName());
+					payload.setPayloadManifest(manifest);
 					theUoW.getEgressContent().addPayloadElement(payload);
 				}
 				theUoW.setProcessingOutcome(UoWProcessingOutcomeEnum.UOW_OUTCOME_SUCCESS);
@@ -305,9 +327,9 @@ public abstract class CDTOrchestratorBase {
 		TopologyNodeFDN wupInstanceKey = uowCacheMT.getAssociatedWUPKey(outputUoW.getInstanceID());
 		TopologyNode node = topologyIM.getNode(wupInstanceKey);
 		getLogger().trace(".publishUoW(): Node Element retrieved --> {}", node);
-		TopologyNodeFunctionFDNToken wupFunctionToken = node.getNodeFunctionFDN().getFunctionToken();
-		getLogger().trace(".publishUoW(): wupFunctionToken (NodeElementFunctionToken) for this activity --> {}", wupFunctionToken);
-		RouteElementNames elementNames = new RouteElementNames(wupFunctionToken);
+		TopologyNodeFDNToken wupToken = node.getNodeFDN().getToken();
+		getLogger().trace(".publishUoW(): wupFunctionToken (NodeElementFunctionToken) for this activity --> {}", wupToken);
+		RouteElementNames elementNames = new RouteElementNames(wupToken);
 		WUPJobCard jobCard = uowCacheMT.getAssociatedJobCard(outputUoW.getInstanceID());
 		ParcelStatusElement statusElement = uowCacheMT.getAssociatedStatusElement(outputUoW.getInstanceID());
 		WorkUnitTransportPacket transportPacket = new WorkUnitTransportPacket(jobCard.getActivityID(), Date.from(Instant.now()), outputUoW);
@@ -342,11 +364,11 @@ public abstract class CDTOrchestratorBase {
     //
     //
     
-    public CDTTypeEnum getTwinType() {
+    public CommunicateResourceTypeEnum getTwinType() {
     	return(specifyTwinType());
     }
     
-	protected List<DataParcelToken> getSubscribedTopicList(){
+	protected List<DataParcelManifest> getSubscribedTopicList(){
 		return(this.subscribedTopicList);
 	}
 	
@@ -361,7 +383,7 @@ public abstract class CDTOrchestratorBase {
     //
 
 	abstract protected Logger specifyLogger();
-    abstract protected CDTTypeEnum specifyTwinType();
+    abstract protected CommunicateResourceTypeEnum specifyTwinType();
 
     //
     //
@@ -369,11 +391,16 @@ public abstract class CDTOrchestratorBase {
     //
     //
 
-	public void requestSubscription(List<DataParcelToken> topicList) {
+	public void requestSubscription(List<DataParcelManifest> topicList) {
 		getSubscribedTopicList().addAll(topicList);
 		if(getAssociatedBehaviourEncapsulatorNode() != null) {
-			for (DataParcelToken dataParcelToken : getSubscribedTopicList()) {
-				topicServer.addTopicSubscriber(dataParcelToken, getAssociatedBehaviourEncapsulatorNode().getContainingNodeFDN().getToken());
+			for (DataParcelManifest dataParcelToken : getSubscribedTopicList()) {
+				PubSubParticipant participant = new PubSubParticipant();
+				IntraSubsystemPubSubParticipant intraParticipant = new IntraSubsystemPubSubParticipant();
+				IntraSubsystemPubSubParticipantIdentifier participantIdentifier = new IntraSubsystemPubSubParticipantIdentifier(getAssociatedBehaviourEncapsulatorNode().getNodeFDN().getToken());
+				intraParticipant.setIdentifier(participantIdentifier);
+				participant.setIntraSubsystemParticipant(intraParticipant);
+				topicServer.addTopicSubscriber(dataParcelToken, participant);
 			}
 		}
 	}

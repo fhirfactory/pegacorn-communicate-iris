@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Mark A. Hunter
+ * Copyright (c) 2021 Mark A. Hunter
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,33 +19,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.fhirfactory.pegacorn.communicate.iris.statespace.common;
+package net.fhirfactory.pegacorn.communicate.common;
 
-import net.fhirfactory.pegacorn.communicate.iris.statespace.CommunicateStateSpaceWorkshop;
-import net.fhirfactory.pegacorn.components.interfaces.topology.WorkshopInterface;
-import net.fhirfactory.pegacorn.petasos.model.wup.WUPArchetypeEnum;
-import net.fhirfactory.pegacorn.wups.archetypes.petasosenabled.messageprocessingbased.MOAStandardWUP;
+import javax.enterprise.context.ApplicationScoped;
 
-import javax.inject.Inject;
+@ApplicationScoped
+public class CommunicateIrisNames {
 
-public abstract class MTPathwayMOAWUP extends MOAStandardWUP {
-
-    @Inject
-    private CommunicateStateSpaceWorkshop workshop;
-
-    public MTPathwayMOAWUP() {
-        super();
+    public String getInteractEgressApplicationServicesClientServerAPIName(){
+        return("matrix-as-cs");
     }
-
-    @Override
-    protected WUPArchetypeEnum specifyWUPArchetype(){
-        return(WUPArchetypeEnum.WUP_NATURE_IRIS_MATRIXCONTROL_PATHWAY);
-    }
-
-    @Override
-    protected WorkshopInterface specifyWorkshop() {
-        return (workshop);
-    }
-
-
+    public String getInteractEgressSynapseAPIName(){return("synapse-api");}
+    public String getInteractIngressApplicationServices(){return("matrix-as");}
 }

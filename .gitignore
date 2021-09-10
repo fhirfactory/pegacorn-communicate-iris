@@ -18,3 +18,7 @@ pegacorn-communicate-iris-matrixcontrol/target/maven-archiver/
 pegacorn-communicate-serverside-iris-fhirbridge/target/classes/
 
 pegacorn-communicate-serverside-iris-fhirbridge/target/test-classes/
+
+*.properties
+
+pegacorn-communicate-iris/._pom.xml

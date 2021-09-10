@@ -24,18 +24,21 @@ package net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.encapsu
 import net.fhirfactory.pegacorn.camel.BaseRouteBuilder;
 import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFunctionFDNToken;
 import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeTypeEnum;
-import net.fhirfactory.pegacorn.common.model.topicid.DataParcelToken;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.orchestrator.common.CDTOrchestratorBase;
+import net.fhirfactory.pegacorn.components.dataparcel.DataParcelManifest;
 import net.fhirfactory.pegacorn.components.interfaces.topology.PegacornTopologyFactoryInterface;
 import net.fhirfactory.pegacorn.components.interfaces.topology.ProcessingPlantInterface;
 import net.fhirfactory.pegacorn.deployment.topology.manager.TopologyIM;
 import net.fhirfactory.pegacorn.deployment.topology.model.common.TopologyNode;
 import net.fhirfactory.pegacorn.deployment.topology.model.nodes.WorkUnitProcessorTopologyNode;
 import net.fhirfactory.pegacorn.deployment.topology.model.nodes.WorkshopTopologyNode;
-import net.fhirfactory.pegacorn.internals.fhir.r4.internal.topics.FHIRElementTopicIDBuilder;
+import net.fhirfactory.pegacorn.internals.fhir.r4.internal.topics.FHIRElementTopicFactory;
 import net.fhirfactory.pegacorn.petasos.core.moa.brokers.PetasosMOAServicesBroker;
 import net.fhirfactory.pegacorn.petasos.core.moa.pathway.naming.RouteElementNames;
-import net.fhirfactory.pegacorn.petasos.datasets.manager.DataParcelSubscriptionIM;
+import net.fhirfactory.pegacorn.petasos.datasets.manager.DataParcelSubscriptionMapIM;
+import net.fhirfactory.pegacorn.petasos.model.pubsub.IntraSubsystemPubSubParticipant;
+import net.fhirfactory.pegacorn.petasos.model.pubsub.IntraSubsystemPubSubParticipantIdentifier;
+import net.fhirfactory.pegacorn.petasos.model.pubsub.PubSubParticipant;
 import net.fhirfactory.pegacorn.petasos.model.wup.WUPArchetypeEnum;
 import net.fhirfactory.pegacorn.petasos.model.wup.WUPIdentifier;
 import net.fhirfactory.pegacorn.petasos.model.wup.WUPJobCard;
@@ -44,7 +47,7 @@ import org.slf4j.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -63,13 +66,13 @@ public abstract class CDTTypeBaseBehaviourEncapsulatorRouteWUP extends BaseRoute
     private TopologyIM wupTopologyProxy;
 
     @Inject
-    private FHIRElementTopicIDBuilder fhirTopicIDBuilder;
+    private FHIRElementTopicFactory fhirTopicIDBuilder;
 
     @Inject
     private ProcessingPlantInterface processingPlantServices;
     
     @Inject 
-    private DataParcelSubscriptionIM topicServer;
+    private DataParcelSubscriptionMapIM topicServer;
 
     public CDTTypeBaseBehaviourEncapsulatorRouteWUP() {
         super();
@@ -92,7 +95,7 @@ public abstract class CDTTypeBaseBehaviourEncapsulatorRouteWUP extends BaseRoute
         getLogger().trace(".initialise(): Setting up the wupTopologyElement (NodeElement) instance, which is the Topology Server's representation of this WUP ");
         buildWUPNodeElement();
         getLogger().trace(".initialise(): Setting the WUP nameSet, which is the set of Route EndPoints that the WUP Framework will use to link various enablers");
-        nameSet = new RouteElementNames(getWUPFunctionToken());
+        nameSet = new RouteElementNames(getWUPIdentifier());
         getLogger().trace(".initialise(): Now call the WUP Framework constructure - which builds the Petasos framework around this WUP");
         buildWUPFramework(this.getContext());
         getLogger().trace(".initialise(): Now invoking subclass initialising function(s)");
@@ -137,7 +140,7 @@ public abstract class CDTTypeBaseBehaviourEncapsulatorRouteWUP extends BaseRoute
     public void buildWUPFramework(CamelContext routeContext) {
         getLogger().debug(".buildWUPFramework(): Entry");
         // By default, the set of Topics this WUP subscribes to will be empty - as we need to the Behaviours to initialise first to tell us.
-        Set<DataParcelToken> emptyTopicList = new HashSet<DataParcelToken>();
+        List<DataParcelManifest> emptyTopicList = new ArrayList<DataParcelManifest>();
         WorkUnitProcessorTopologyNode wupNode = (WorkUnitProcessorTopologyNode)this.topologyNode;
         servicesBroker.registerWorkUnitProcessor(wupNode, emptyTopicList, this.getWUPArchetype());
         getLogger().debug(".buildWUPFramework(): Exit");
@@ -179,11 +182,11 @@ public abstract class CDTTypeBaseBehaviourEncapsulatorRouteWUP extends BaseRoute
         return (WUPArchetypeEnum.WUP_NATURE_LADON_BEHAVIOUR_WRAPPER);
     }
 
-    public FHIRElementTopicIDBuilder getFHIRTopicIDBuilder(){
+    public FHIRElementTopicFactory getFHIRTopicIDBuilder(){
         return(this.fhirTopicIDBuilder);
     }
     
-    public void requestSubscription(List<DataParcelToken> tokenList) {
+    public void requestSubscription(List<DataParcelManifest> tokenList) {
     	
     }
 
@@ -192,24 +195,29 @@ public abstract class CDTTypeBaseBehaviourEncapsulatorRouteWUP extends BaseRoute
         WorkshopTopologyNode workshopNode = processingPlantServices.getWorkshop(getWUPWorkshopName());
         getLogger().trace(".buildWUPNodeElement(): Entry, Workshop NodeElement--> {}", workshopNode);
         PegacornTopologyFactoryInterface topologyFactory = getProcessingPlantServices().getTopologyFactory();
-        WorkUnitProcessorTopologyNode newWUPNode = topologyFactory.addWorkUnitProcessor(getWUPInstanceName(), getWUPVersion(), workshopNode, TopologyNodeTypeEnum.WUP);
+        WorkUnitProcessorTopologyNode newWUPNode = topologyFactory.createWorkUnitProcessor(getWUPInstanceName(), getWUPVersion(), workshopNode, TopologyNodeTypeEnum.WUP);
         this.setTopologyNode(newWUPNode);
         getOrchestrator().registerEncapsulatorWUPNode(newWUPNode);
         getLogger().debug(".buildWUPNodeElement(): Exit");
     }
     
     
-    public void subscribeToTopics(Set<DataParcelToken> subscribedTopics){
+    public void subscribeToTopics(Set<DataParcelManifest> subscribedTopics){
         getLogger().debug(".uowTopicSubscribe(): Entry, subscribedTopics --> {}, wupNode --> {}", subscribedTopics, getWUPIdentifier() );
         if(subscribedTopics.isEmpty()){
         	getLogger().debug(".uowTopicSubscribe(): Not topics provided as input, exiting");
             return;
         }
-        Iterator<DataParcelToken> topicIterator = subscribedTopics.iterator();
+        Iterator<DataParcelManifest> topicIterator = subscribedTopics.iterator();
         while(topicIterator.hasNext()) {
-            DataParcelToken currentTopicID = topicIterator.next();
+            DataParcelManifest currentTopicID = topicIterator.next();
             getLogger().trace(".uowTopicSubscribe(): wupNode->{} is subscribing to UoW Content Topic->{}", getTopologyNode().getNodeFDN().getToken(), currentTopicID);
-            topicServer.addTopicSubscriber(currentTopicID, getTopologyNode().getNodeFDN().getToken() );
+            PubSubParticipant participant = new PubSubParticipant();
+            IntraSubsystemPubSubParticipant subsystemParticipant = new IntraSubsystemPubSubParticipant();
+            IntraSubsystemPubSubParticipantIdentifier subsystemParticipantIdentifier = new IntraSubsystemPubSubParticipantIdentifier(getTopologyNode().getNodeFDN().getToken());
+            subsystemParticipant.setIdentifier(subsystemParticipantIdentifier);
+            participant.setIntraSubsystemParticipant(subsystemParticipant);
+            topicServer.addTopicSubscriber(currentTopicID, participant);
         }
         getLogger().debug(".uowTopicSubscribe(): Exit");
     }
@@ -223,7 +231,7 @@ public abstract class CDTTypeBaseBehaviourEncapsulatorRouteWUP extends BaseRoute
         return processingPlantServices;
     }
 
-    public DataParcelSubscriptionIM getTopicServer() {
+    public DataParcelSubscriptionMapIM getTopicServer() {
         return topicServer;
     }
 

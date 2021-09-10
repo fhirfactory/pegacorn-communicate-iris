@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Mark A. Hunter
+ * Copyright (c) 2021 Mark A. Hunter (ACT Health)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,24 +19,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.orchestrator;
+package net.fhirfactory.pegacorn.communicate.iris.workflow.practitionerrole.activities;
 
-import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.orchestrator.common.CDTOrchestratorBase;
-import net.fhirfactory.pegacorn.internals.communicate.entities.common.valuesets.CommunicateResourceTypeEnum;
+import net.fhirfactory.pegacorn.communicate.iris.workflow.common.EntityActivityBase;
+import net.fhirfactory.pegacorn.internals.communicate.activity.CommunicateActivityOutcome;
+import net.fhirfactory.pegacorn.internals.communicate.entities.practitionerrole.CommunicatePractitionerRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class HealthcareServiceCDTOrchestrator extends CDTOrchestratorBase {
-    private static final Logger LOG = LoggerFactory.getLogger(HealthcareServiceCDTOrchestrator.class );
-    
-    @Override
-    protected Logger specifyLogger(){return(LOG);}
+public class PractitionerRoleFulfillmentActivity extends EntityActivityBase {
+    private static final Logger LOG = LoggerFactory.getLogger(PractitionerRoleFulfillmentActivity.class);
 
     @Override
-    protected CommunicateResourceTypeEnum specifyTwinType() {
-        return (CommunicateResourceTypeEnum.COMMUNICATE_HEALTHCARESERVICE);
+    protected Logger specifyLogger() {
+        return (LOG);
+    }
+
+    public CommunicateActivityOutcome updatePractitionerRoleFulfillment(CommunicatePractitionerRole practitionerRole){
+        getLogger().debug(".updatePractitionerRoleFulfillment(): Entry");
+        CommunicateActivityOutcome outcome = new CommunicateActivityOutcome();
+
+        getLogger().debug(".updatePractitionerRoleFulfillment(): Entry, outcome->{}", outcome);
+        return(outcome);
     }
 }

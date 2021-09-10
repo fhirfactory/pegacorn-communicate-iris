@@ -25,8 +25,8 @@ import net.fhirfactory.pegacorn.communicate.iris.statespace.entityplane.accessor
 import net.fhirfactory.pegacorn.communicate.iris.statespace.entityplane.matrixdomain.PractitionerMatrixDomainServices;
 import net.fhirfactory.pegacorn.internals.communicate.entities.practitioner.CommunicatePractitioner;
 import net.fhirfactory.pegacorn.internals.communicate.entities.rooms.CommunicateRoom;
+import net.fhirfactory.pegacorn.internals.esr.brokers.CommunicateRoomESRBroker;
 import net.fhirfactory.pegacorn.internals.esr.brokers.GroupESRBroker;
-import net.fhirfactory.pegacorn.internals.esr.brokers.MatrixRoomESRBroker;
 import net.fhirfactory.pegacorn.internals.esr.resources.common.ExtremelySimplifiedResource;
 import net.fhirfactory.pegacorn.internals.esr.transactions.ESRMethodOutcome;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class CommunicateRoomAccessor extends MatrixRoomESRBroker{
+public class CommunicateRoomAccessor extends CommunicateRoomESRBroker {
     private static final Logger LOG = LoggerFactory.getLogger(CommunicateRoomAccessor.class);
 
     @Inject
@@ -117,6 +117,7 @@ public class CommunicateRoomAccessor extends MatrixRoomESRBroker{
         switch(discussion.getRoomType()){
             case COMMUNICATE_GENERAL_DISCUSSION_ROOM:
         }
+        return(null);
     }
 
     /**

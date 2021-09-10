@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Mark A. Hunter
+ * Copyright (c) 2021 Mark A. Hunter (ACT Health)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,33 +19,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.fhirfactory.pegacorn.communicate.iris.statespace.common;
+package net.fhirfactory.pegacorn.communicate.iris.workflow.practitioner.activities;
 
-import net.fhirfactory.pegacorn.communicate.iris.statespace.CommunicateStateSpaceWorkshop;
-import net.fhirfactory.pegacorn.components.interfaces.topology.WorkshopInterface;
-import net.fhirfactory.pegacorn.petasos.model.wup.WUPArchetypeEnum;
-import net.fhirfactory.pegacorn.wups.archetypes.petasosenabled.messageprocessingbased.MOAStandardWUP;
+import net.fhirfactory.pegacorn.communicate.iris.workflow.common.EntityActivityBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
+import javax.enterprise.context.ApplicationScoped;
 
-public abstract class MTPathwayMOAWUP extends MOAStandardWUP {
-
-    @Inject
-    private CommunicateStateSpaceWorkshop workshop;
-
-    public MTPathwayMOAWUP() {
-        super();
-    }
+@ApplicationScoped
+public class PractitionerRoleSelectionActivity extends EntityActivityBase {
+    private static final Logger LOG = LoggerFactory.getLogger(PractitionerRoleSelectionActivity.class);
 
     @Override
-    protected WUPArchetypeEnum specifyWUPArchetype(){
-        return(WUPArchetypeEnum.WUP_NATURE_IRIS_MATRIXCONTROL_PATHWAY);
+    protected Logger specifyLogger() {
+        return (LOG);
     }
-
-    @Override
-    protected WorkshopInterface specifyWorkshop() {
-        return (workshop);
-    }
-
-
 }

@@ -21,8 +21,8 @@
  */
 package net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.encapsulatorroutes.common.beans;
 
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.stimulus.MTStimulus;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.orchestrator.common.CDTOrchestratorBase;
+import net.fhirfactory.pegacorn.internals.communicate.workflow.model.stimulus.CDTStimulus;
 import org.slf4j.Logger;
 
 public abstract class MTStimulusRegistrationBeanBase {
@@ -34,7 +34,7 @@ public abstract class MTStimulusRegistrationBeanBase {
 		return(specifyTwinOrchestrator());
 	}
 	
-	public String registerStimulus(MTStimulus incomingStimulus) {
+	public String registerStimulus(CDTStimulus incomingStimulus) {
 		getTwinOrchestrator().registerNewStimulus(incomingStimulus);
 		return(null);
 	}

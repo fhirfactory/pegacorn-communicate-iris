@@ -21,13 +21,13 @@
  */
 package net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.encapsulatorroutes;
 
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.model.MTTypeEnum;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.encapsulatorroutes.beans.PractitionerStimulusRegistrationBean;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.encapsulatorroutes.beans.PractitionerUoWRegistrationBean;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.encapsulatorroutes.common.CDTTypeBaseBehaviourEncapsulatorRouteWUP;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.encapsulatorroutes.common.beans.UoW2StimulusListBean;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.orchestrator.PractitionerCDTOrchestrator;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.orchestrator.common.CDTOrchestratorBase;
+import net.fhirfactory.pegacorn.internals.communicate.workflow.model.CDTTypeEnum;
 import net.fhirfactory.pegacorn.petasos.core.moa.pathway.wupcontainer.worker.buildingblocks.WUPContainerEgressGatekeeper;
 import net.fhirfactory.pegacorn.petasos.core.moa.pathway.wupcontainer.worker.buildingblocks.WUPContainerEgressProcessor;
 import net.fhirfactory.pegacorn.petasos.core.moa.pathway.wupcontainer.worker.buildingblocks.WUPContainerIngresGatekeeper;
@@ -48,7 +48,7 @@ public class PractitionerCDTTypeWUPBehaviourEncapsulator extends CDTTypeBaseBeha
 
     @Override
     protected String specifyTwinTypeName() {
-        return (MTTypeEnum.MATRIX_TWIN_PRACTITIONER.getTwinType());
+        return (CDTTypeEnum.COMMUNICATE_TWIN_PRACTITIONER.getTwinType());
     }
 
     @Override

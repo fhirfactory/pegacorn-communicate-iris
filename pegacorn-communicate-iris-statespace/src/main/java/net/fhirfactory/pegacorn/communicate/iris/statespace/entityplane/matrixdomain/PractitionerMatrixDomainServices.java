@@ -21,10 +21,8 @@
  */
 package net.fhirfactory.pegacorn.communicate.iris.statespace.entityplane.matrixdomain;
 
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.actions.complexactions.CommunicatePractitionerGeneralNotificationsRoomActions;
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.actions.complexactions.CommunicatePractitionerMyCallsRoomActions;
-import net.fhirfactory.pegacorn.communicate.iris.matrixcontrol.workshops.actions.complexactions.CommunicatePractitionerMyMediaRoomActions;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.common.api.CommunicatePractitionerDomainInterface;
+import net.fhirfactory.pegacorn.communicate.matrixbridge.workshops.transform.api.CommunicatePractitionerMatrixAPI;
 import net.fhirfactory.pegacorn.internals.communicate.entities.practitioner.CommunicatePractitioner;
 import net.fhirfactory.pegacorn.internals.communicate.entities.rooms.CommunicatePractitionerMyCallsRoom;
 import net.fhirfactory.pegacorn.internals.communicate.entities.rooms.CommunicatePractitionerMyMediaRoom;
@@ -35,7 +33,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
@@ -43,13 +40,8 @@ public class PractitionerMatrixDomainServices implements CommunicatePractitioner
     private static final Logger LOG = LoggerFactory.getLogger(PractitionerMatrixDomainServices.class);
 
     @Inject
-    private CommunicatePractitionerMyMediaRoomActions myMediaRoomActions;
+    private CommunicatePractitionerMatrixAPI practitionerMatrixAPI;
 
-    @Inject
-    private CommunicatePractitionerMyCallsRoomActions myCallsRoomActions;
-
-    @Inject
-    private CommunicatePractitionerGeneralNotificationsRoomActions myGeneralNotificationsRoomActions;
 
     @Inject
     private IdentifierESDTTypesEnum identifierESDTTypesEnum;
@@ -80,51 +72,24 @@ public class PractitionerMatrixDomainServices implements CommunicatePractitioner
     // Practitioner Centric Rooms
     //
 
+
     @Override
-    public List<CommunicateRoom> validatePractitionerSystemRooms(CommunicatePractitioner practitioner){
-        List<CommunicateRoom> roomSet = new ArrayList<>();
-        if(practitioner == null){
-            return(roomSet);
-        }
-        CommunicateRoom callsRoom = synchronisePractitionerMyCallsRoom(practitioner);
-        CommunicateRoom mediaRoom = synchronisePractitionerMyMediaRoom(practitioner);
-        CommunicateRoom notificationsRoom = synchronisePractitionerGeneralNotificationRoom(practitioner);
-        roomSet.add(callsRoom);
-        roomSet.add(mediaRoom);
-        roomSet.add(notificationsRoom);
-        return(roomSet);
+    public List<CommunicateRoom> validatePractitionerSystemRooms(CommunicatePractitioner practitioner) {
+        return null;
     }
 
     @Override
-    public CommunicatePractitionerMyCallsRoom synchronisePractitionerMyCallsRoom(CommunicatePractitioner practitioner){
-        CommunicatePractitionerMyCallsRoom myCallsMatrixRoom = null;
-        if(!myCallsRoomActions.validateRoomExistence(practitioner)){
-            myCallsMatrixRoom = (CommunicatePractitionerMyCallsRoom)myCallsRoomActions.createRoomInMatrixDomain(practitioner);
-        } else {
-            myCallsMatrixRoom = (CommunicatePractitionerMyCallsRoom)myCallsRoomActions.getRoom(practitioner);
-        }
-        return(myCallsMatrixRoom);
+    public CommunicatePractitionerMyCallsRoom synchronisePractitionerMyCallsRoom(CommunicatePractitioner practitioner) {
+        return null;
     }
 
     @Override
-    public CommunicatePractitionerMyMediaRoom synchronisePractitionerMyMediaRoom(CommunicatePractitioner practitioner){
-        CommunicatePractitionerMyMediaRoom myCallsMatrixRoom = null;
-        if(!myMediaRoomActions.validateRoomExistence(practitioner)){
-            myCallsMatrixRoom = (CommunicatePractitionerMyMediaRoom)myMediaRoomActions.createRoomInMatrixDomain(practitioner);
-        } else {
-            myCallsMatrixRoom = (CommunicatePractitionerMyMediaRoom)myMediaRoomActions.getRoom(practitioner);
-        }
-        return(myCallsMatrixRoom);
+    public CommunicatePractitionerMyMediaRoom synchronisePractitionerMyMediaRoom(CommunicatePractitioner practitioner) {
+        return null;
     }
 
     @Override
-    public CommunicateRoom synchronisePractitionerGeneralNotificationRoom(CommunicatePractitioner practitioner){
-        CommunicateRoom myCallsMatrixRoom = null;
-        if(!myGeneralNotificationsRoomActions.validateRoomExistence(practitioner)){
-            myCallsMatrixRoom = myGeneralNotificationsRoomActions.createRoomInMatrixDomain(practitioner);
-        } else {
-            myCallsMatrixRoom = myGeneralNotificationsRoomActions.getRoom(practitioner);
-        }
-        return(myCallsMatrixRoom);
+    public CommunicateRoom synchronisePractitionerGeneralNotificationRoom(CommunicatePractitioner practitioner) {
+        return null;
     }
 }
