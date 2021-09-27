@@ -22,7 +22,6 @@
 
 package net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.encapsulatorroutes.common.beans;
 
-import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFDN;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.orchestrator.common.CDTOrchestratorBase;
 import net.fhirfactory.pegacorn.deployment.topology.manager.TopologyIM;
 import net.fhirfactory.pegacorn.petasos.core.moa.pathway.naming.PetasosPathwayExchangePropertyNames;
@@ -34,6 +33,7 @@ import org.apache.camel.Exchange;
 import org.slf4j.Logger;
 
 import javax.inject.Inject;
+import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFDN;
 
 public abstract class UoWRegistrationBeanBase {
 

@@ -24,8 +24,7 @@ package net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.orchest
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFDN;
-import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFDNToken;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.forwardermap.CDTInstance2EdgeForwarderMap;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.orchestrator.common.caches.*;
 import net.fhirfactory.pegacorn.components.dataparcel.DataParcelManifest;
@@ -71,6 +70,8 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFDN;
+import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFDNToken;
 
 public abstract class CDTOrchestratorBase {
 
@@ -131,6 +132,8 @@ public abstract class CDTOrchestratorBase {
 		this.initialised = false;
 		//
 		this.jsonObjectMapper = new ObjectMapper();
+		JavaTimeModule module = new JavaTimeModule();
+		jsonObjectMapper.registerModule(module);
 		this.jsonObjectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
     }
 

@@ -25,6 +25,7 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import net.fhirfactory.pegacorn.components.dataparcel.DataParcelManifest;
 import net.fhirfactory.pegacorn.components.interfaces.topology.ProcessingPlantInterface;
 import net.fhirfactory.pegacorn.internals.communicate.entities.careteam.CommunicateCareTeam;
@@ -71,6 +72,8 @@ public class UoW2StimulusListBean {
     public UoW2StimulusListBean(){
     	super();
     	jsonMapper = new ObjectMapper();
+		JavaTimeModule module = new JavaTimeModule();
+		jsonMapper.registerModule(module);
     	jsonMapper.configure(JsonParser.Feature.ALLOW_MISSING_VALUES, true);
 	}
 

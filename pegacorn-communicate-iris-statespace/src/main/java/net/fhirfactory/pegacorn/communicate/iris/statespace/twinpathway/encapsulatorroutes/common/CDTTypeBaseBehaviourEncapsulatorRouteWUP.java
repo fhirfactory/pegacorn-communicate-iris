@@ -22,8 +22,7 @@
 package net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.encapsulatorroutes.common;
 
 import net.fhirfactory.pegacorn.camel.BaseRouteBuilder;
-import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFunctionFDNToken;
-import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeTypeEnum;
+
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.orchestrator.common.CDTOrchestratorBase;
 import net.fhirfactory.pegacorn.components.dataparcel.DataParcelManifest;
 import net.fhirfactory.pegacorn.components.interfaces.topology.PegacornTopologyFactoryInterface;
@@ -51,6 +50,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFunctionFDNToken;
+import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeTypeEnum;
 
 public abstract class CDTTypeBaseBehaviourEncapsulatorRouteWUP extends BaseRouteBuilder{
     abstract protected Logger getLogger();
