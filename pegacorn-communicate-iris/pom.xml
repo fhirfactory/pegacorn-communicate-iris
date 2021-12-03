@@ -20,8 +20,8 @@
     </properties>
     
     <modules>
-        <module>../pegacorn-communicate-iris-statespace</module>
-        <module>../pegacorn-communicate-iris-workflow</module>
-        <module>../pegacorn-communicate-iris-subsystem</module>
+        <!--module>../pegacorn-communicate-iris-statespace</module-->
+        <!--module>../pegacorn-communicate-iris-workflow</module-->
+        <!--module>../pegacorn-communicate-iris-subsystem</module-->
     </modules>
 </project>

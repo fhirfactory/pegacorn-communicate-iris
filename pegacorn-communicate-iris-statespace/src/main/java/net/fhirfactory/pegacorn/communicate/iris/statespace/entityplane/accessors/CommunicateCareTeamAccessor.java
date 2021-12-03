@@ -23,8 +23,8 @@ package net.fhirfactory.pegacorn.communicate.iris.statespace.entityplane.accesso
 
 import net.fhirfactory.pegacorn.communicate.iris.statespace.entityplane.accessors.common.EntityPlaneUpdateOriginEnum;
 import net.fhirfactory.pegacorn.internals.communicate.entities.careteam.CommunicateCareTeam;
-import net.fhirfactory.pegacorn.internals.esr.brokers.CareTeamESRBroker;
-import net.fhirfactory.pegacorn.internals.esr.resources.common.ExtremelySimplifiedResource;
+import net.fhirfactory.pegacorn.core.model.ui.brokers.CareTeamESRBroker;
+import net.fhirfactory.pegacorn.core.model.ui.resources.simple.common.ExtremelySimplifiedResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -27,15 +27,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.forwardermap.CDTInstance2EdgeForwarderMap;
 import net.fhirfactory.pegacorn.communicate.iris.statespace.twinpathway.orchestrator.common.caches.*;
-import net.fhirfactory.pegacorn.components.dataparcel.DataParcelManifest;
-import net.fhirfactory.pegacorn.components.dataparcel.DataParcelTypeDescriptor;
-import net.fhirfactory.pegacorn.components.dataparcel.valuesets.DataParcelDirectionEnum;
-import net.fhirfactory.pegacorn.components.dataparcel.valuesets.DataParcelNormalisationStatusEnum;
-import net.fhirfactory.pegacorn.components.dataparcel.valuesets.DataParcelValidationStatusEnum;
-import net.fhirfactory.pegacorn.components.dataparcel.valuesets.PolicyEnforcementPointApprovalStatusEnum;
-import net.fhirfactory.pegacorn.components.interfaces.topology.ProcessingPlantInterface;
+import net.fhirfactory.pegacorn.core.interfaces.topology.ProcessingPlantInterface;
+import net.fhirfactory.pegacorn.core.model.component.SoftwareComponent;
+import net.fhirfactory.pegacorn.core.model.dataparcel.DataParcelManifest;
+import net.fhirfactory.pegacorn.core.model.petasos.wup.PetasosTaskJobCard;
 import net.fhirfactory.pegacorn.deployment.topology.manager.TopologyIM;
-import net.fhirfactory.pegacorn.deployment.topology.model.common.TopologyNode;
 import net.fhirfactory.pegacorn.internals.communicate.entities.common.valuesets.CommunicateResourceTypeEnum;
 import net.fhirfactory.pegacorn.internals.communicate.workflow.model.CDTIdentifier;
 import net.fhirfactory.pegacorn.internals.communicate.workflow.model.behaviours.*;
@@ -44,19 +40,15 @@ import net.fhirfactory.pegacorn.internals.communicate.workflow.model.stimulus.CD
 import net.fhirfactory.pegacorn.internals.communicate.workflow.model.stimulus.CDTStimulusPackage;
 import net.fhirfactory.pegacorn.internals.fhir.r4.internal.topics.FHIRElementTopicFactory;
 import net.fhirfactory.pegacorn.petasos.core.moa.pathway.naming.RouteElementNames;
-import net.fhirfactory.pegacorn.petasos.datasets.manager.DataParcelSubscriptionMapIM;
-import net.fhirfactory.pegacorn.petasos.model.pathway.WorkUnitTransportPacket;
-import net.fhirfactory.pegacorn.petasos.model.pubsub.IntraSubsystemPubSubParticipant;
-import net.fhirfactory.pegacorn.petasos.model.pubsub.IntraSubsystemPubSubParticipantIdentifier;
-import net.fhirfactory.pegacorn.petasos.model.pubsub.PubSubParticipant;
-import net.fhirfactory.pegacorn.petasos.model.resilience.activitymatrix.moa.ParcelStatusElement;
-import net.fhirfactory.pegacorn.petasos.model.resilience.parcel.ResilienceParcelProcessingStatusEnum;
-import net.fhirfactory.pegacorn.petasos.model.uow.UoW;
-import net.fhirfactory.pegacorn.petasos.model.uow.UoWIdentifier;
-import net.fhirfactory.pegacorn.petasos.model.uow.UoWPayload;
-import net.fhirfactory.pegacorn.petasos.model.uow.UoWProcessingOutcomeEnum;
-import net.fhirfactory.pegacorn.petasos.model.wup.WUPActivityStatusEnum;
-import net.fhirfactory.pegacorn.petasos.model.wup.WUPJobCard;
+import net.fhirfactory.pegacorn.petasos.core.subscriptions.manager.DataParcelSubscriptionMapIM;
+import net.fhirfactory.pegacorn.core.model.petasos.pubsub.IntraSubsystemPubSubParticipant;
+import net.fhirfactory.pegacorn.core.model.petasos.pubsub.IntraSubsystemPubSubParticipantIdentifier;
+import net.fhirfactory.pegacorn.core.model.petasos.pubsub.PubSubParticipant;
+import net.fhirfactory.pegacorn.core.model.petasos.resilience.parcel.ResilienceParcelProcessingStatusEnum;
+import net.fhirfactory.pegacorn.core.model.petasos.uow.UoW;
+import net.fhirfactory.pegacorn.core.model.petasos.uow.UoWIdentifier;
+import net.fhirfactory.pegacorn.core.model.petasos.uow.UoWPayload;
+import net.fhirfactory.pegacorn.core.model.petasos.uow.UoWProcessingOutcomeEnum;
 import net.fhirfactory.pegacorn.util.FHIRContextUtility;
 import org.apache.camel.CamelContext;
 import org.apache.camel.ProducerTemplate;
@@ -70,8 +62,8 @@ import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFDN;
-import net.fhirfactory.pegacorn.common.model.componentid.TopologyNodeFDNToken;
+import net.fhirfactory.pegacorn.core.model.componentid.TopologyNodeFDN;
+import net.fhirfactory.pegacorn.core.model.componentid.TopologyNodeFDNToken;
 
 public abstract class CDTOrchestratorBase {
 
@@ -79,13 +71,13 @@ public abstract class CDTOrchestratorBase {
     private ConcurrentHashMap<CDTBehaviourIdentifier, CDTBehaviourCentricExclusionFilterRulesInterface> exclusionFilterMap;
     private ConcurrentHashMap<CDTIdentifier, CDTBehaviourIdentifier> twinInstanceBusyStatus;
     private List<DataParcelManifest> subscribedTopicList;
-    private ConcurrentHashMap<CDTBehaviourIdentifier, TopologyNode> behaviourSet;
+    private ConcurrentHashMap<CDTBehaviourIdentifier, SoftwareComponent> behaviourSet;
     private CDTUoWCache uowCacheMT;
     private CDTStimulusCache CDTStimulusCache;
     private CDTInstanceWorkQueues twinWorkQueues;
     private CDTCausalityMapCache causalityMap;
 	private CDTOutcomeCache CDTOutcomeCache;
-	private TopologyNode associatedBehaviourEncapsulatorNode;
+	private SoftwareComponent associatedBehaviourEncapsulatorNode;
 	private boolean initialised;
 	private ObjectMapper jsonObjectMapper;
     
@@ -174,7 +166,7 @@ public abstract class CDTOrchestratorBase {
 
 	// Stage 1
 
-	public void registerNewUoW(UoW newUoW, WUPJobCard jobCard, ParcelStatusElement statusElement, TopologyNodeFDN wupKey){
+	public void registerNewUoW(UoW newUoW, PetasosTaskJobCard jobCard, ParcelStatusElement statusElement, TopologyNodeFDN wupKey){
 		uowCacheMT.addUoW(newUoW, jobCard, statusElement, wupKey );
 	}
 
@@ -232,8 +224,8 @@ public abstract class CDTOrchestratorBase {
 		if(!behaviourSet.containsKey(behaviourId)) {
 			return;
 		}
-		TopologyNode behaviourNode = behaviourSet.get(behaviourId);
-		RouteElementNames nameSet = new RouteElementNames(behaviourNode.getNodeFDN().getToken());
+		SoftwareComponent behaviourNode = behaviourSet.get(behaviourId);
+		RouteElementNames nameSet = new RouteElementNames(behaviourNode.getComponentFDN().getToken());
 		ProducerTemplate prodTemplate = camelCTX.createProducerTemplate();
 		prodTemplate.sendBody(nameSet.getEndPointWUPContainerIngresProcessorIngres(), stimulusPkg);
 	}
@@ -328,9 +320,9 @@ public abstract class CDTOrchestratorBase {
 	public void publishUoW(UoW outputUoW){
 		getLogger().debug(".publishUoW(): Entry, outputUoW --> {}", outputUoW);
 		TopologyNodeFDN wupInstanceKey = uowCacheMT.getAssociatedWUPKey(outputUoW.getInstanceID());
-		TopologyNode node = topologyIM.getNode(wupInstanceKey);
+		SoftwareComponent node = topologyIM.getNode(wupInstanceKey);
 		getLogger().trace(".publishUoW(): Node Element retrieved --> {}", node);
-		TopologyNodeFDNToken wupToken = node.getNodeFDN().getToken();
+		TopologyNodeFDNToken wupToken = node.getComponentFDN().getToken();
 		getLogger().trace(".publishUoW(): wupFunctionToken (NodeElementFunctionToken) for this activity --> {}", wupToken);
 		RouteElementNames elementNames = new RouteElementNames(wupToken);
 		WUPJobCard jobCard = uowCacheMT.getAssociatedJobCard(outputUoW.getInstanceID());
@@ -375,7 +367,7 @@ public abstract class CDTOrchestratorBase {
 		return(this.subscribedTopicList);
 	}
 	
-	protected TopologyNode getAssociatedBehaviourEncapsulatorNode() {
+	protected SoftwareComponent getAssociatedBehaviourEncapsulatorNode() {
 		return(this.associatedBehaviourEncapsulatorNode);
 	}
 
@@ -400,7 +392,7 @@ public abstract class CDTOrchestratorBase {
 			for (DataParcelManifest dataParcelToken : getSubscribedTopicList()) {
 				PubSubParticipant participant = new PubSubParticipant();
 				IntraSubsystemPubSubParticipant intraParticipant = new IntraSubsystemPubSubParticipant();
-				IntraSubsystemPubSubParticipantIdentifier participantIdentifier = new IntraSubsystemPubSubParticipantIdentifier(getAssociatedBehaviourEncapsulatorNode().getNodeFDN().getToken());
+				IntraSubsystemPubSubParticipantIdentifier participantIdentifier = new IntraSubsystemPubSubParticipantIdentifier(getAssociatedBehaviourEncapsulatorNode().getComponentFDN().getToken());
 				intraParticipant.setIdentifier(participantIdentifier);
 				participant.setIntraSubsystemParticipant(intraParticipant);
 				topicServer.addTopicSubscriber(dataParcelToken, participant);
@@ -408,7 +400,7 @@ public abstract class CDTOrchestratorBase {
 		}
 	}
 
-	public void registerEncapsulatorWUPNode(TopologyNode encapsulatorNode){
+	public void registerEncapsulatorWUPNode(SoftwareComponent encapsulatorNode){
 		this.associatedBehaviourEncapsulatorNode = encapsulatorNode;
 	}
 
@@ -430,7 +422,7 @@ public abstract class CDTOrchestratorBase {
 		getLogger().debug(".registerBehaviourCentricExclusiveFilterRules(): Exit");
 	}
     
-	public void registerBehaviourNode(CDTBehaviourIdentifier behaviourId, TopologyNode behaviourNode) {
+	public void registerBehaviourNode(CDTBehaviourIdentifier behaviourId, SoftwareComponent behaviourNode) {
 		getLogger().debug(".registerBehaviourNode() Entry, BehaviourIdentifier --> {}, NodeElement --> {}", behaviourId, behaviourNode);
 		if(!behaviourSet.containsKey(behaviourId)) {
 			behaviourSet.put(behaviourId,  behaviourNode);

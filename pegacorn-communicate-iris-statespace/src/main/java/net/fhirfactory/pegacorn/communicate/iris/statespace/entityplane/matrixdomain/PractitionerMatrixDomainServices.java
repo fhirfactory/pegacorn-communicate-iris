@@ -27,7 +27,7 @@ import net.fhirfactory.pegacorn.internals.communicate.entities.practitioner.Comm
 import net.fhirfactory.pegacorn.internals.communicate.entities.rooms.CommunicatePractitionerMyCallsRoom;
 import net.fhirfactory.pegacorn.internals.communicate.entities.rooms.CommunicatePractitionerMyMediaRoom;
 import net.fhirfactory.pegacorn.internals.communicate.entities.rooms.CommunicateRoom;
-import net.fhirfactory.pegacorn.internals.esr.resources.valuesets.IdentifierESDTTypesEnum;
+import net.fhirfactory.pegacorn.core.model.ui.resources.simple.valuesets.IdentifierESDTTypesEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -73,7 +73,7 @@ public class CareTeamCDTTypeWUPBehaviourEncapsulator extends CDTTypeBaseBehaviou
 
         fromWithStandardExceptionHandling(getRouteElementNameSet().getEndPointWUPContainerIngresProcessorIngres())
                 .routeId(getRouteElementNameSet().getRouteWUPContainerIngressProcessor())
-                .bean(WUPContainerIngresProcessor.class, "ingresContentProcessor(*, Exchange," + this.getTopologyNode().getNodeFDN().getToken().getTokenValue() + ")")
+                .bean(WUPContainerIngresProcessor.class, "ingresContentProcessor(*, Exchange," + this.getTopologyNode().getComponentFDN().getToken().getTokenValue() + ")")
                 .to(getRouteElementNameSet().getEndPointWUPContainerIngresProcessorEgress());
 
         fromWithStandardExceptionHandling(getRouteElementNameSet().getEndPointWUPContainerIngresProcessorEgress())
@@ -82,7 +82,7 @@ public class CareTeamCDTTypeWUPBehaviourEncapsulator extends CDTTypeBaseBehaviou
 
         fromWithStandardExceptionHandling(getRouteElementNameSet().getEndPointWUPContainerIngresGatekeeperIngres())
                 .routeId(getRouteElementNameSet().getRouteWUPContainerIngresGateway())
-                .bean(WUPContainerIngresGatekeeper.class, "ingresGatekeeper(*, Exchange," + this.getTopologyNode().getNodeFDN().getToken().getTokenValue() + ")");
+                .bean(WUPContainerIngresGatekeeper.class, "ingresGatekeeper(*, Exchange," + this.getTopologyNode().getComponentFDN().getToken().getTokenValue() + ")");
 
         fromWithStandardExceptionHandling(getRouteElementNameSet().getEndPointWUPIngresConduitIngres())
                 .routeId(getRouteElementNameSet().getRouteCoreWUP())
@@ -94,7 +94,7 @@ public class CareTeamCDTTypeWUPBehaviourEncapsulator extends CDTTypeBaseBehaviou
 
         fromWithStandardExceptionHandling(getRouteElementNameSet().getEndPointWUPContainerEgressProcessorIngres())
                 .routeId(getRouteElementNameSet().getRouteWUPContainerEgressProcessor())
-                .bean(WUPContainerEgressProcessor.class, "egressContentProcessor(*, Exchange," + this.getTopologyNode().getNodeFDN().getToken().getTokenValue() + ")")
+                .bean(WUPContainerEgressProcessor.class, "egressContentProcessor(*, Exchange," + this.getTopologyNode().getComponentFDN().getToken().getTokenValue() + ")")
                 .to(getRouteElementNameSet().getEndPointWUPContainerEgressProcessorEgress());
 
         fromWithStandardExceptionHandling(getRouteElementNameSet().getEndPointWUPContainerEgressProcessorEgress())
@@ -103,6 +103,6 @@ public class CareTeamCDTTypeWUPBehaviourEncapsulator extends CDTTypeBaseBehaviou
 
         fromWithStandardExceptionHandling(getRouteElementNameSet().getEndPointWUPContainerEgressGatekeeperIngres())
                 .routeId(getRouteElementNameSet().getRouteWUPContainerEgressGateway())
-                .bean(WUPContainerEgressGatekeeper.class, "egressGatekeeper(*, Exchange," + this.getTopologyNode().getNodeFDN().getToken().getTokenValue() + ")");
+                .bean(WUPContainerEgressGatekeeper.class, "egressGatekeeper(*, Exchange," + this.getTopologyNode().getComponentFDN().getToken().getTokenValue() + ")");
     } 
 }

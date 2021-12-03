@@ -22,14 +22,14 @@
 package net.fhirfactory.pegacorn.communicate.iris.statespace.entityplane.cache;
 
 import net.fhirfactory.pegacorn.communicate.iris.statespace.entityplane.cache.common.CommunicateResourceCacheBase;
-import net.fhirfactory.pegacorn.internals.esr.resources.CareTeamESR;
-import net.fhirfactory.pegacorn.internals.esr.resources.common.ExtremelySimplifiedResource;
-import net.fhirfactory.pegacorn.internals.esr.resources.datatypes.IdentifierESDT;
-import net.fhirfactory.pegacorn.internals.esr.resources.datatypes.IdentifierESDTUseEnum;
-import net.fhirfactory.pegacorn.internals.esr.resources.search.CareTeamSearchResult;
-import net.fhirfactory.pegacorn.internals.esr.resources.search.common.ESRSearchResult;
-import net.fhirfactory.pegacorn.internals.esr.transactions.ESRMethodOutcome;
-import net.fhirfactory.pegacorn.internals.esr.transactions.exceptions.ResourceInvalidSearchException;
+import net.fhirfactory.pegacorn.core.model.ui.resources.simple.CareTeamESR;
+import net.fhirfactory.pegacorn.core.model.ui.resources.simple.common.ExtremelySimplifiedResource;
+import net.fhirfactory.pegacorn.core.model.ui.resources.simple.datatypes.IdentifierESDT;
+import net.fhirfactory.pegacorn.core.model.ui.resources.simple.valuesets.IdentifierESDTUseEnum;
+import net.fhirfactory.pegacorn.core.model.ui.resources.simple.search.CareTeamSearchResult;
+import net.fhirfactory.pegacorn.core.model.ui.resources.simple.search.common.ESRSearchResult;
+import net.fhirfactory.pegacorn.core.model.ui.transactions.ESRMethodOutcome;
+import net.fhirfactory.pegacorn.core.model.ui.transactions.exceptions.ResourceInvalidSearchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

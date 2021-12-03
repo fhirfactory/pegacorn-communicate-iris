@@ -22,11 +22,11 @@
 package net.fhirfactory.pegacorn.communicate.processingplant.configuration;
 
 import net.fhirfactory.pegacorn.communicate.common.CommunicateIrisNames;
+import net.fhirfactory.pegacorn.core.model.topology.nodes.*;
 import net.fhirfactory.pegacorn.deployment.properties.configurationfilebased.common.segments.ports.interact.ClusteredInteractHTTPServerPortSegment;
 import net.fhirfactory.pegacorn.deployment.properties.configurationfilebased.common.segments.ports.interact.StandardInteractClientPortSegment;
 import net.fhirfactory.pegacorn.deployment.topology.factories.archetypes.common.PetasosEnabledSubsystemTopologyFactory;
-import net.fhirfactory.pegacorn.deployment.topology.model.nodes.*;
-import net.fhirfactory.pegacorn.deployment.topology.model.nodes.common.EndpointProviderInterface;
+import net.fhirfactory.pegacorn.core.model.topology.nodes.common.EndpointProviderInterface;
 import net.fhirfactory.pegacorn.util.PegacornEnvironmentProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,30 +66,29 @@ public class CommunicateIrisTopologyFactory extends PetasosEnabledSubsystemTopol
     }
 
     @Override
-    protected ProcessingPlantTopologyNode buildSubsystemTopology() {
+    protected ProcessingPlantSoftwareComponent buildSubsystemTopology() {
         SubsystemTopologyNode subsystemTopologyNode = addSubsystemNode(getTopologyIM().getSolutionTopology());
         BusinessServiceTopologyNode businessServiceTopologyNode = addBusinessServiceNode(subsystemTopologyNode);
         DeploymentSiteTopologyNode deploymentSiteTopologyNode = addDeploymentSiteNode(businessServiceTopologyNode);
         ClusterServiceTopologyNode clusterServiceTopologyNode = addClusterServiceNode(deploymentSiteTopologyNode);
 
         PlatformTopologyNode platformTopologyNode = addPlatformNode(clusterServiceTopologyNode);
-        ProcessingPlantTopologyNode processingPlantTopologyNode = addPegacornProcessingPlant(platformTopologyNode);
-        addPrometheusPort(processingPlantTopologyNode);
-        addJolokiaPort(processingPlantTopologyNode);
-        addKubeLivelinessPort(processingPlantTopologyNode);
-        addKubeReadinessPort(processingPlantTopologyNode);
-        addEdgeAnswerPort(processingPlantTopologyNode);
-        addIntraZoneIPCJGroupsPort(processingPlantTopologyNode);
-        addInterZoneIPCJGroupsPort(processingPlantTopologyNode);
+        ProcessingPlantSoftwareComponent processingPlantSoftwareComponent = addPegacornProcessingPlant(platformTopologyNode);
+        addPrometheusPort(processingPlantSoftwareComponent);
+        addJolokiaPort(processingPlantSoftwareComponent);
+        addKubeLivelinessPort(processingPlantSoftwareComponent);
+        addKubeReadinessPort(processingPlantSoftwareComponent);
+        addEdgeAnswerPort(processingPlantSoftwareComponent);
+        addAllJGroupsEndpoints(processingPlantSoftwareComponent);
 
         // Unique to Whispers
         getLogger().trace(".buildSubsystemTopology(): Add the httpClient port to the ProcessingPlant Topology Node");
-        addHTTPClientPorts(processingPlantTopologyNode);
+        addHTTPClientPorts(processingPlantSoftwareComponent);
         getLogger().trace(".buildSubsystemTopology(): Add the httpServer port to the ClusterService Topology Node");
         addHTTPServerPorts(clusterServiceTopologyNode);
         getLogger().trace(".buildSubsystemTopology(): Add the httpServer port to the ProcessingPlant Topology Node");
-        addHTTPServerPorts(processingPlantTopologyNode);
-        return(processingPlantTopologyNode);
+        addHTTPServerPorts(processingPlantSoftwareComponent);
+        return(processingPlantSoftwareComponent);
     }
 
     protected void addHTTPClientPorts( EndpointProviderInterface endpointProvider) {
