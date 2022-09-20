@@ -21,8 +21,8 @@
  */
 package net.fhirfactory.pegacorn.communicate.iris.datagrid.twinpathway.orchestrator.common.caches;
 
-import net.fhirfactory.pegacorn.core.model.petasos.uow.UoW;
-import net.fhirfactory.pegacorn.core.model.petasos.uow.UoWIdentifier;
+import net.fhirfactory.dricats.model.petasos.uow.UoW;
+import net.fhirfactory.dricats.model.petasos.uow.UoWIdentifier;
 
 import java.util.concurrent.ConcurrentHashMap;
 import net.fhirfactory.pegacorn.core.model.componentid.TopologyNodeFDN;

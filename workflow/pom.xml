@@ -13,7 +13,7 @@
     <artifactId>dricats-communicate-iris-workflow</artifactId>
     <packaging>jar</packaging>
         
-    <name>DRICATS :: Communicate :: Iris :: Workflow Engine</name>
+    <name>DRICaTS :: Communicate :: Iris :: Workflow Engine</name>
 
     <url>http://pegacorn.fhirfactory.net</url>
 
@@ -116,25 +116,12 @@
 
         <dependency>
             <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-deployment-topology</artifactId>
+            <artifactId>dricats-deployment-configuration</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-deployment-properties</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-deployment-datasets</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
+
         <dependency>
             <groupId>net.fhirfactory.dricats</groupId>
             <artifactId>dricats-buildingblocks-commoncode</artifactId>
@@ -145,7 +132,7 @@
 
         <dependency>
             <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-buildingblocks-petasos-core</artifactId>
+            <artifactId>dricats-petasos-framework</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>
@@ -153,41 +140,19 @@
 
         <dependency>
             <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-buildingblocks-edge-model</artifactId>
+            <artifactId>dricats-datamodels-communicate</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-buildingblocks-processingplant</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-buildingblocks-datamodels-communicate</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-buildingblocks-datamodels-fhir</artifactId>
+            <artifactId>dricats-datamodels-fhir</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
 
-
-        <dependency>
-            <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-buildingblocks-workshop</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
         <!-- **************************** -->
         <!-- * Infinispan               * -->
         <!-- **************************** -->

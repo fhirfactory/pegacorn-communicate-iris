@@ -25,7 +25,7 @@ import net.fhirfactory.pegacorn.internals.communicate.workflow.model.CDTIdentifi
 import net.fhirfactory.pegacorn.internals.communicate.workflow.model.behaviours.CDTBehaviourIdentifier;
 import net.fhirfactory.pegacorn.internals.communicate.workflow.model.behaviours.CDTBehaviourProcessingOfStimulusStatusEnum;
 import net.fhirfactory.pegacorn.internals.communicate.workflow.model.stimulus.CDTStimulusIdentifier;
-import net.fhirfactory.pegacorn.core.model.petasos.uow.UoWIdentifier;
+import net.fhirfactory.dricats.model.petasos.uow.UoWIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

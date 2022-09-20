@@ -12,7 +12,7 @@
     <artifactId>dricats-communicate-iris</artifactId>
     <packaging>pom</packaging>
     
-    <name>DRICATS :: Communicate :: Iris </name>
+    <name>DRICaTS :: Communicate :: Iris </name>
     <description>The integation adpater (for converting FHIR-to-Matrix and Matrix-to-FHIR evets</description>
 
     <properties>

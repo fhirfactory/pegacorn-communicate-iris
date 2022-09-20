@@ -22,11 +22,11 @@
 package net.fhirfactory.pegacorn.communicate.iris.datagrid;
 
 import net.fhirfactory.pegacorn.core.model.componentid.PegacornSystemComponentTypeTypeEnum;
-import net.fhirfactory.pegacorn.workshops.base.Workshop;
+import net.fhirfactory.dricats.petasos.participant.workshops.base.UnmonitoredWorkshop;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CommunicateStateSpaceWorkshop extends Workshop {
+public class CommunicateStateSpaceWorkshop extends UnmonitoredWorkshop {
     private static final Logger LOG = LoggerFactory.getLogger(CommunicateStateSpaceWorkshop.class);
 
     private static String WORKSHOP_NAME = "CommunicateStateSpace";
@@ -48,8 +48,8 @@ public class CommunicateStateSpaceWorkshop extends Workshop {
     }
 
     @Override
-    protected PegacornSystemComponentTypeTypeEnum specifyWorkshopType() {
-        return (PegacornSystemComponentTypeTypeEnum.WORKSHOP);
+    protected DricatsSoftwareComponentTypeEnum specifyWorkshopType() {
+        return (DricatsSoftwareComponentTypeEnum.WORKSHOP);
     }
 
     @Override

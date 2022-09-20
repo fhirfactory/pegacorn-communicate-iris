@@ -28,10 +28,10 @@ import net.fhirfactory.pegacorn.communicate.iris.datagrid.twinpathway.encapsulat
 import net.fhirfactory.pegacorn.communicate.iris.datagrid.twinpathway.orchestrator.CareTeamCDTOrchestrator;
 import net.fhirfactory.pegacorn.communicate.iris.datagrid.twinpathway.orchestrator.common.CDTOrchestratorBase;
 import net.fhirfactory.pegacorn.internals.communicate.workflow.model.CDTTypeEnum;
-import net.fhirfactory.pegacorn.petasos.core.moa.pathway.wupcontainer.worker.buildingblocks.WUPContainerEgressGatekeeper;
-import net.fhirfactory.pegacorn.petasos.core.moa.pathway.wupcontainer.worker.buildingblocks.WUPContainerEgressProcessor;
-import net.fhirfactory.pegacorn.petasos.core.moa.pathway.wupcontainer.worker.buildingblocks.WUPContainerIngresGatekeeper;
-import net.fhirfactory.pegacorn.petasos.core.moa.pathway.wupcontainer.worker.buildingblocks.WUPContainerIngresProcessor;
+import net.fhirfactory.pegacorn.petasos.tasking.fulfilment.wupcontainer.worker.buildingblocks.WUPContainerEgressGatekeeper;
+import net.fhirfactory.pegacorn.petasos.tasking.fulfilment.wupcontainer.worker.buildingblocks.WUPContainerEgressProcessor;
+import net.fhirfactory.pegacorn.petasos.tasking.fulfilment.wupcontainer.worker.buildingblocks.WUPContainerIngresGatekeeper;
+import net.fhirfactory.pegacorn.petasos.tasking.fulfilment.wupcontainer.worker.buildingblocks.WUPContainerIngresProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

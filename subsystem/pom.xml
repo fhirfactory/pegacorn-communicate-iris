@@ -13,7 +13,7 @@
     <artifactId>dricats-communicate-iris-subsystem</artifactId>
     <packaging>jar</packaging>
         
-    <name>DRICATS :: Communicate :: Iris :: Subsystem</name>
+    <name>DRICaTS :: Communicate :: Iris :: Subsystem</name>
 
     <url>http://pegacorn.fhirfactory.net</url>
 
@@ -102,27 +102,16 @@
         <!-- **************************** -->
         <!-- * Pegacorn Components      * -->
         <!-- **************************** -->
+
+
         <dependency>
             <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-deployment-topology</artifactId>
+            <artifactId>dricats-deployment-configuration</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-deployment-properties</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-deployment-datasets</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
+
         <dependency>
             <groupId>net.fhirfactory.dricats</groupId>
             <artifactId>dricats-buildingblocks-commoncode</artifactId>
@@ -133,48 +122,11 @@
 
         <dependency>
             <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-buildingblocks-petasos-audit</artifactId>
+            <artifactId>dricats-petasos-framework</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
-
-        <dependency>
-            <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-buildingblocks-petasos-core</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-buildingblocks-edge-model</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-buildingblocks-processingplant</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-buildingblocks-workunitprocessors</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>net.fhirfactory.dricats</groupId>
-            <artifactId>dricats-buildingblocks-auditservices-agent</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-
 
         <!-- **************************** -->
         <!-- * Infinispan               * -->

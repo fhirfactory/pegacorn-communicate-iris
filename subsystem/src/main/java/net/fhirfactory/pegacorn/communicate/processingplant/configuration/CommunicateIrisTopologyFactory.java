@@ -22,10 +22,8 @@
 package net.fhirfactory.pegacorn.communicate.processingplant.configuration;
 
 import net.fhirfactory.pegacorn.communicate.common.CommunicateIrisNames;
-import net.fhirfactory.pegacorn.core.model.topology.nodes.*;
 import net.fhirfactory.pegacorn.deployment.properties.configurationfilebased.common.segments.ports.http.ClusteredHTTPServerPortSegment;
 import net.fhirfactory.pegacorn.deployment.properties.configurationfilebased.common.segments.ports.http.HTTPClientPortSegment;
-import net.fhirfactory.pegacorn.deployment.properties.configurationfilebased.common.segments.ports.interact.InteractClientPortSegment;
 import net.fhirfactory.pegacorn.deployment.topology.factories.archetypes.base.PetasosEnabledSubsystemTopologyFactory;
 import net.fhirfactory.pegacorn.core.model.topology.nodes.common.EndpointProviderInterface;
 import net.fhirfactory.pegacorn.util.PegacornEnvironmentProperties;
@@ -68,7 +66,7 @@ public class CommunicateIrisTopologyFactory extends PetasosEnabledSubsystemTopol
 
     @Override
     protected ProcessingPlantSoftwareComponent buildSubsystemTopology() {
-        SubsystemTopologyNode subsystemTopologyNode = addSubsystemNode(getTopologyIM().getSolutionTopology());
+        SubsystemTopologyNode subsystemTopologyNode = addSubsystemNode(getLocalSolution().getSolutionTopology());
         BusinessServiceTopologyNode businessServiceTopologyNode = addBusinessServiceNode(subsystemTopologyNode);
         DeploymentSiteTopologyNode deploymentSiteTopologyNode = addDeploymentSiteNode(businessServiceTopologyNode);
         ClusterServiceTopologyNode clusterServiceTopologyNode = addClusterServiceNode(deploymentSiteTopologyNode);

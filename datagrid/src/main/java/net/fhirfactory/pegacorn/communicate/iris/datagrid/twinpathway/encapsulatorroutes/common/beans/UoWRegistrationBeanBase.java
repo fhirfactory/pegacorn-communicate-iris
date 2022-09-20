@@ -24,8 +24,8 @@ package net.fhirfactory.pegacorn.communicate.iris.datagrid.twinpathway.encapsula
 
 import net.fhirfactory.pegacorn.communicate.iris.datagrid.twinpathway.orchestrator.common.CDTOrchestratorBase;
 import net.fhirfactory.pegacorn.deployment.topology.manager.TopologyIM;
-import net.fhirfactory.pegacorn.petasos.core.moa.pathway.naming.PetasosPathwayExchangePropertyNames;
-import net.fhirfactory.pegacorn.core.model.petasos.uow.UoW;
+import net.fhirfactory.pegacorn.petasos.tasking.fulfilment.naming.PetasosPathwayExchangePropertyNames;
+import net.fhirfactory.dricats.model.petasos.uow.UoW;
 import org.apache.camel.Exchange;
 import org.slf4j.Logger;
 

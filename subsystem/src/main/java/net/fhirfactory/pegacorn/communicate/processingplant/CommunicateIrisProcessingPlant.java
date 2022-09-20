@@ -21,10 +21,10 @@
  */
 package net.fhirfactory.pegacorn.communicate.processingplant;
 
-import net.fhirfactory.pegacorn.processingplant.ProcessingPlant;
+import net.fhirfactory.dricats.petasos.participant.processingplant.PetasosEnabledProcessingPlant;
 
 
-public abstract class CommunicateIrisProcessingPlant extends ProcessingPlant {
+public abstract class CommunicateIrisProcessingPlant extends PetasosEnabledProcessingPlant {
 
     public CommunicateIrisProcessingPlant(){
         super();

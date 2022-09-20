@@ -24,7 +24,7 @@ package net.fhirfactory.pegacorn.communicate.iris.datagrid.common;
 import net.fhirfactory.pegacorn.communicate.iris.datagrid.CommunicateStateSpaceWorkshop;
 import net.fhirfactory.pegacorn.components.interfaces.topology.WorkshopInterface;
 import net.fhirfactory.pegacorn.petasos.model.wup.WUPArchetypeEnum;
-import net.fhirfactory.pegacorn.wups.archetypes.petasosenabled.messageprocessingbased.MOAStandardWUP;
+import net.fhirfactory.dricats.petasos.participant.wup.messagebased.MOAStandardWUP;
 
 import javax.inject.Inject;
 

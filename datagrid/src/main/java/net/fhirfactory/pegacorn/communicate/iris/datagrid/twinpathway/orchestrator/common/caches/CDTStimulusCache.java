@@ -24,7 +24,7 @@ package net.fhirfactory.pegacorn.communicate.iris.datagrid.twinpathway.orchestra
 
 import net.fhirfactory.pegacorn.internals.communicate.workflow.model.stimulus.CDTStimulus;
 import net.fhirfactory.pegacorn.internals.communicate.workflow.model.stimulus.CDTStimulusIdentifier;
-import net.fhirfactory.pegacorn.core.model.petasos.uow.UoWIdentifier;
+import net.fhirfactory.dricats.model.petasos.uow.UoWIdentifier;
 
 import java.util.HashSet;
 import java.util.Set;
